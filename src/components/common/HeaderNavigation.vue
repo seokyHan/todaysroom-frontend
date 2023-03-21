@@ -71,7 +71,7 @@
 									font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 								"
 							>
-								로그아웃
+								<p>로그아웃</p>
 							</AButton>
 						</AMenu-item>
 					</AMenu>
