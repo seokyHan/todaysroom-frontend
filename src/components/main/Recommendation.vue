@@ -6,7 +6,8 @@
 				<div class="recommendation__header">
 					<div class="header__title">
 						<h1>
-							<strong>{{ getRecentSearch }}</strong> 추천매물
+							<!-- <strong>{{ getRecentSearch }}</strong> 추천매물 -->
+							<strong>최근 검색</strong> 추천매물
 						</h1>
 						<span>최근 검색조건으로 추천된 매물입니다.</span>
 					</div>
@@ -69,15 +70,19 @@
 							<img :src="apt.img" :alt="apt.aptName" />
 						</div>
 						<div class="apt__apt-info">
-							<h2 class="apt-info__name">{{ apt.aptName }}</h2>
-							<h1 class="apt-info__price">
+							<!-- <h2 class="apt-info__name">{{ apt.aptName }}</h2> -->
+							<h2 class="apt-info__name">아파트 이름</h2>
+							<!-- <h1 class="apt-info__price">
 								{{ apt.recentPrice | convertAptPrice }}
-							</h1>
-							<p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p>
-							<p class="apt-info__address">
+							</h1> -->
+							<h1 class="apt-info__price">가격</h1>
+							<!-- <p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p> -->
+							<p class="apt-info__build-year">건축연도: 2022</p>
+							<!-- <p class="apt-info__address">
 								{{ apt.sidoName }} {{ apt.gugunName }} {{ apt.dongName }}
 								{{ apt.jibun }}
-							</p>
+							</p> -->
+							<p class="apt-info__address">서울특별시 영등포구 대림동 23</p>
 						</div>
 					</div>
 				</div>
@@ -91,6 +96,27 @@
 </template>
 
 <script>
+export default {
+	computed: {
+		isLogin: function () {
+			return true;
+		},
+		loading: function () {
+			return false;
+		},
+		recommendations: function () {
+			return 10;
+		},
+	},
+	methods: {
+		moveSearchPage() {
+			this.$router.push('/search');
+		},
+		moveSearchPageWithData() {
+			alert('hi');
+		},
+	},
+};
 // import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
 // import {fetchRecommendations} from '@/api/search';
 // import Swal from 'sweetalert2';

@@ -50,7 +50,27 @@
 		</div>
 	</div>
 </template>
+
 <script>
+export default {
+	data() {
+		return {
+			newsList: [],
+		};
+	},
+	created() {
+		this.initNewsList();
+	},
+	methods: {
+		initNewsList() {
+			this.newsList = [
+				{newsTitle: 'test1'},
+				{newsTitle: 'test2'},
+				{newsTitle: 'test3'},
+			];
+		},
+	},
+};
 // import {fetchNewsList} from '@/api/news';
 // import Swal from 'sweetalert2';
 // export default {
