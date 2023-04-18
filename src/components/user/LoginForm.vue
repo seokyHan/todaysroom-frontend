@@ -24,7 +24,8 @@
 		</div>
 		<div class="login-form__btn-group">
 			<div class="btn-group__save-id">
-				<input type="checkbox" id="save-id-check" v-model="saveIdStatus" />
+				<!-- <input type="checkbox" id="save-id-check" v-model="saveIdStatus" /> -->
+				<input type="checkbox" id="save-id-check" />
 				<label for="save-id-check">아이디 저장</label>
 			</div>
 			<div class="btn-group__nav">
@@ -45,54 +46,55 @@
 // 	getUserEmailFromCookie,
 // 	deleteCookie,
 // } from '@/utils/cookies';
-// import Swal from 'sweetalert2';
-// export default {
-// 	data() {
-// 		return {
-// 			userEmail: getUserEmailFromCookie() || '',
-// 			password: '',
-// 			saveIdStatus: getUserEmailFromCookie() && true,
-// 		};
-// 	},
-// 	methods: {
-// 		async submitLoginForm() {
-// 			try {
-// 				const loginUserData = {
-// 					userEmail: this.userEmail,
-// 					password: this.password,
-// 				};
-// 				this.saveIdStatus
-// 					? saveUserEmailToCookie(this.userEmail)
-// 					: deleteCookie('userEmail');
-// 				await this.$store.dispatch('userStore/LOGIN', loginUserData);
-// 				Swal.fire({
-// 					position: 'center',
-// 					icon: 'success',
-// 					width: 350,
-// 					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">로그인 완료<div>`,
-// 					showConfirmButton: false,
-// 					timer: 1500,
-// 				});
-// 				this.$router.push('/');
-// 			} catch (error) {
-// 				Swal.fire({
-// 					position: 'center',
-// 					icon: 'warning',
-// 					width: 350,
-// 					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">아이디 또는 비밀번호가 일치하지 않습니다.<div>`,
-// 					showConfirmButton: false,
-// 					timer: 1500,
-// 				});
-// 			} finally {
-// 				this.initForm();
-// 			}
-// 		},
-// 		initForm() {
-// 			this.userEmail = '';
-// 			this.password = '';
-// 		},
-// 	},
-// };
+import Swal from 'sweetalert2';
+export default {
+	data() {
+		return {
+			// userEmail: getUserEmailFromCookie() || '',
+			userEmail: '',
+			password: '',
+			// saveIdStatus: getUserEmailFromCookie() && true,
+		};
+	},
+	methods: {
+		async submitLoginForm() {
+			try {
+				const loginUserData = {
+					userEmail: this.userEmail,
+					password: this.password,
+				};
+				// this.saveIdStatus
+				// 	? saveUserEmailToCookie(this.userEmail)
+				// 	: deleteCookie('userEmail');
+				await this.$store.dispatch('userStore/LOGIN', loginUserData);
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					width: 350,
+					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">로그인 완료<div>`,
+					showConfirmButton: false,
+					timer: 1500,
+				});
+				this.$router.push('/');
+			} catch (error) {
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					width: 350,
+					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">아이디 또는 비밀번호가 일치하지 않습니다.<div>`,
+					showConfirmButton: false,
+					timer: 1500,
+				});
+			} finally {
+				this.initForm();
+			}
+		},
+		initForm() {
+			this.userEmail = '';
+			this.password = '';
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
