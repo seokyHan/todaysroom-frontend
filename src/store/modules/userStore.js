@@ -49,8 +49,8 @@ const userStore = {
 	actions: {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
+			console.log(data);
 			commit('SET_TOKEN', data.token);
-			console.log(loginUserData);
 		},
 	},
 };
