@@ -89,39 +89,39 @@ export default {
 	computed: {
 		...mapGetters('userStore', ['getNickname', 'isLogin']),
 	},
-	// 	methods: {
-	// 		clickLogout() {
-	// 			this.$store.dispatch('userStore/LOGOUT');
-	// 			clearAllCookies();
-	// 			this.$router.history.current.fullPath === '/'
-	// 				? this.$router.go()
-	// 				: this.$router.push('/');
-	// 		},
-	// 		showConfirm() {
-	// 			const headerNavigation = this;
-	// 			this.$confirm({
-	// 				title: () => (
-	// 					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Spoqa Han Sans Neo', 'sans-serif'; color: #000;">
-	// 						로그아웃 하시겠습니까?
-	// 					</h1>
-	// 				),
-	// 				okText: '확인',
-	// 				cancelText: '취소',
-	// 				onOk() {
-	// 					headerNavigation.userLogout();
-	// 				},
-	// 				onCancel() {},
-	// 				class: 'test',
-	// 			});
-	// 		},
-	// 		userLogout() {
-	// 			this.$store.dispatch('userStore/LOGOUT');
-	// 			clearAllCookies();
-	// 			this.$router.history.current.fullPath === '/'
-	// 				? this.$router.go()
-	// 				: this.$router.push('/');
-	// 		},
-	// 	},
+	methods: {
+		clickLogout() {
+			this.$store.dispatch('userStore/LOGOUT');
+			// clearAllCookies();
+			this.$router.history.current.fullPath === '/'
+				? this.$router.go()
+				: this.$router.push('/');
+		},
+		showConfirm() {
+			const headerNavigation = this;
+			this.$confirm({
+				title: () => (
+					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Spoqa Han Sans Neo', 'sans-serif'; color: #000;">
+						로그아웃 하시겠습니까?
+					</h1>
+				),
+				okText: '확인',
+				cancelText: '취소',
+				onOk() {
+					headerNavigation.userLogout();
+				},
+				onCancel() {},
+				class: 'test',
+			});
+		},
+		userLogout() {
+			this.$store.dispatch('userStore/LOGOUT');
+			// clearAllCookies();
+			this.$router.history.current.fullPath === '/'
+				? this.$router.go()
+				: this.$router.push('/');
+		},
+	},
 };
 </script>
 
