@@ -4,7 +4,9 @@ export function setInterceptors(instance) {
 	instance.interceptors.request.use(
 		function (config) {
 			const token = store.getters['userStore/getToken'];
-			config.headers.Authorization = `Bearer ${token}`;
+			if (token) {
+				config.headers.Authorization = `Bearer ${token}`;
+			}
 			return config;
 		},
 		function (error) {

@@ -3,7 +3,8 @@ import {userLogin} from '@/api/auth';
 const userStore = {
 	namespaced: true,
 	state: {
-		token: '',
+		accressToken: '',
+		refreshToken: '',
 		id: '',
 		nickname: '',
 		recentSearch: '',
@@ -11,7 +12,7 @@ const userStore = {
 	},
 	getters: {
 		isLogin(state) {
-			return state.token !== '';
+			return state.accressToken !== '';
 		},
 		getToken(state) {
 			return state.token;
