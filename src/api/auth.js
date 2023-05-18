@@ -4,4 +4,8 @@ function userLogin(userData) {
 	return instance.post('/users/login', userData);
 }
 
-export {userLogin};
+function reissue() {
+	return instance.post('/users/reissue');
+}
+
+export {userLogin, reissue};
