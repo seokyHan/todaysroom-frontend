@@ -8,4 +8,8 @@ function reissue() {
 	return instance.post('/users/reissue');
 }
 
-export {userLogin, reissue};
+function userTest() {
+	return instance.post('/users/test');
+}
+
+export {userLogin, reissue, userTest};

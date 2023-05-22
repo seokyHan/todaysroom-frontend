@@ -1,4 +1,4 @@
-import {userLogin} from '@/api/auth';
+import {userLogin, userTest} from '@/api/auth';
 
 const userStore = {
 	namespaced: true,
@@ -15,7 +15,7 @@ const userStore = {
 			return state.accressToken !== '';
 		},
 		getToken(state) {
-			return state.token;
+			return state.accressToken;
 		},
 		getId(state) {
 			return state.id;
@@ -31,8 +31,8 @@ const userStore = {
 		},
 	},
 	mutations: {
-		SET_TOKEN(state, token) {
-			state.token = token;
+		SET_TOKEN(state, accressToken) {
+			state.accressToken = accressToken;
 		},
 		SET_ID(state, id) {
 			state.id = id;
@@ -51,7 +51,12 @@ const userStore = {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
 			console.log(data);
-			commit('SET_TOKEN', data.token);
+			commit('SET_TOKEN', data.accressToken);
+		},
+		async TEST(state) {
+			const t = await userTest();
+			console.log('key ' + state.accressToken);
+			console.log(t);
 		},
 	},
 };

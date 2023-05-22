@@ -6,6 +6,7 @@ export function setInterceptors(instance) {
 		function (config) {
 			const token = store.getters['userStore/getToken'];
 			if (token) {
+				console.log(token);
 				config.headers.Authorization =
 					process.env.VUE_APP_API_TOKEN_PREFIX + ' ' + token;
 			}

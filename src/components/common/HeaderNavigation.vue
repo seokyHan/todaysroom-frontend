@@ -13,6 +13,9 @@
 		</template>
 		<template v-else>
 			<div class="header__user">
+				<button type="button" @click="test" class="login-form__submit-btn">
+					로그인
+				</button>
 				<ADropdown-button size="large">
 					닉네임
 					<!-- {{ getNickname }} -->
@@ -120,6 +123,9 @@ export default {
 			this.$router.history.current.fullPath === '/'
 				? this.$router.go()
 				: this.$router.push('/');
+		},
+		test() {
+			this.$store.dispatch('userStore/TEST');
 		},
 	},
 };
