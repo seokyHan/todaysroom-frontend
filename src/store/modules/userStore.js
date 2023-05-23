@@ -3,7 +3,7 @@ import {userLogin, userTest} from '@/api/auth';
 const userStore = {
 	namespaced: true,
 	state: {
-		accressToken: '',
+		accessToken: '',
 		refreshToken: '',
 		id: '',
 		nickname: '',
@@ -11,11 +11,15 @@ const userStore = {
 		authority: '',
 	},
 	getters: {
-		isLogin(state) {
-			return state.accressToken !== '';
+		isLogin() {
+			// return state.accressToken !== '';
+			return true;
 		},
 		getToken(state) {
-			return state.accressToken;
+			return state.accessToken;
+		},
+		getRtk(state) {
+			return state.refreshToken;
 		},
 		getId(state) {
 			return state.id;
@@ -31,8 +35,11 @@ const userStore = {
 		},
 	},
 	mutations: {
-		SET_TOKEN(state, accressToken) {
-			state.accressToken = accressToken;
+		SET_TOKEN(state, accessToken) {
+			state.accessToken = accessToken;
+		},
+		SET_RTK(state, refreshToken) {
+			state.refreshToken = refreshToken;
 		},
 		SET_ID(state, id) {
 			state.id = id;
@@ -51,11 +58,11 @@ const userStore = {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
 			console.log(data);
-			commit('SET_TOKEN', data.accressToken);
+			commit('SET_TOKEN', data.accessToken);
+			commit('SET_RTK', data.refreshToken);
 		},
-		async TEST(state) {
+		async TEST() {
 			const t = await userTest();
-			console.log('key ' + state.accressToken);
 			console.log(t);
 		},
 	},
