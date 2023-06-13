@@ -12,13 +12,12 @@
 			</RouterLink>
 		</template>
 		<template v-else>
+			<button type="button" @click="test" class="login-form__submit-btn">
+				테스트
+			</button>
 			<div class="header__user">
-				<button type="button" @click="test" class="login-form__submit-btn">
-					로그인
-				</button>
 				<ADropdown-button size="large">
-					닉네임
-					<!-- {{ getNickname }} -->
+					{{ getNickname }}
 					<AMenu slot="overlay" style="padding: 0; border-radius: 3px">
 						<AMenu-item
 							key="1"

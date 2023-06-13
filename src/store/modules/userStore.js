@@ -1,25 +1,33 @@
 import {userLogin, userTest} from '@/api/auth';
+import {
+	getAuthFromCookie,
+	getUserFromCookie,
+	getIdFromCookie,
+	getRecentSearchFromCookie,
+	//getAuthorityFromCookie,
+	saveAuthToCookie,
+	saveUserToCookie,
+	saveIdToCookie,
+	saveRecentSearchToCookie,
+	//saveAuthorityToCookie,
+} from '@/utils/cookies';
 
 const userStore = {
 	namespaced: true,
 	state: {
-		accessToken: '',
-		refreshToken: '',
-		id: '',
-		nickname: '',
-		recentSearch: '',
+		accessToken: getAuthFromCookie() || '',
+		id: getIdFromCookie() || '',
+		nickname: getUserFromCookie() || '',
+		recentSearch: getRecentSearchFromCookie() || '',
+		likedAptCodes: [],
 		authority: '',
 	},
 	getters: {
-		isLogin() {
-			// return state.accressToken !== '';
-			return true;
+		isLogin(state) {
+			return state.accessToken !== '';
 		},
 		getToken(state) {
 			return state.accessToken;
-		},
-		getRtk(state) {
-			return state.refreshToken;
 		},
 		getId(state) {
 			return state.id;
@@ -57,9 +65,17 @@ const userStore = {
 	actions: {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
-			console.log(data);
+
 			commit('SET_TOKEN', data.accessToken);
-			commit('SET_RTK', data.refreshToken);
+			commit('SET_ID', data.id);
+			commit('SET_NICKNAME', data.nickname);
+			commit('SET_RECENT_SEARCH', data.recentSearch);
+
+			saveAuthToCookie(data.accessToken);
+			saveIdToCookie(data.id);
+			saveUserToCookie(data.nickname);
+			saveRecentSearchToCookie(data.recentSearch);
+			//saveAuthorityToCookie(data.authority);
 		},
 		async TEST() {
 			const t = await userTest();

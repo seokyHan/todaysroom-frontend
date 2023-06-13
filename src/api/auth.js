@@ -1,5 +1,5 @@
-import {instance} from '@/api/index';
-import {instanceWithAuth} from '@/api/index';
+import {instance, instanceWithAuth} from '@/api/index';
+// import {instanceWithAuth} from '@/api/index';
 
 function userLogin(userData) {
 	// 다른 도메인에 요청과 응답에 쿠키를 허용하려면 withCredentials true 설정(로컬 개발 테스트용)
