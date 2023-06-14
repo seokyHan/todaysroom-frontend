@@ -11,8 +11,12 @@ function reissue() {
 	return instance.post('/users/reissue');
 }
 
+function userLogOut(userEmail) {
+	return instance.post('/users/logout', userEmail);
+}
+
 function userTest() {
 	return instanceWithAuth.post('/users/test');
 }
 
-export {userLogin, reissue, userTest};
+export {userLogin, reissue, userLogOut, userTest};

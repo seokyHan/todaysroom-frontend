@@ -1,4 +1,4 @@
-import {userLogin, userTest} from '@/api/auth';
+import {userLogOut, userLogin, userTest} from '@/api/auth';
 import {
 	getAuthFromCookie,
 	getUserFromCookie,
@@ -10,6 +10,7 @@ import {
 	saveIdToCookie,
 	saveRecentSearchToCookie,
 	//saveAuthorityToCookie,
+	clearAllCookies,
 } from '@/utils/cookies';
 
 const userStore = {
@@ -61,6 +62,13 @@ const userStore = {
 		SET_AUTHORITY(state, authority) {
 			state.authority = authority;
 		},
+		CLEAR_ALL(state) {
+			state.token = '';
+			state.id = '';
+			state.nickname = '';
+			state.recentSearch = '';
+			state.likedAptCodes = [];
+		},
 	},
 	actions: {
 		async LOGIN({commit}, loginUserData) {
@@ -76,6 +84,13 @@ const userStore = {
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			//saveAuthorityToCookie(data.authority);
+		},
+		async LOGOUT({commit}, userEmail) {
+			await userLogOut(userEmail);
+
+			commit('CLEAR_ALL');
+
+			clearAllCookies();
 		},
 		async TEST() {
 			const t = await userTest();

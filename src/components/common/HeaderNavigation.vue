@@ -86,19 +86,17 @@
 
 <script>
 import {mapGetters} from 'vuex';
-// import {clearAllCookies} from '@/utils/cookies';
+import {getUserEmailFromCookie} from '@/utils/cookies';
 export default {
+	data() {
+		return {
+			userEmail: getUserEmailFromCookie() || '',
+		};
+	},
 	computed: {
-		...mapGetters('userStore', ['getNickname', 'isLogin']),
+		...mapGetters('userStore', ['getNickname', 'isLogin', 'getId']),
 	},
 	methods: {
-		clickLogout() {
-			this.$store.dispatch('userStore/LOGOUT');
-			// clearAllCookies();
-			this.$router.history.current.fullPath === '/'
-				? this.$router.go()
-				: this.$router.push('/');
-		},
 		showConfirm() {
 			const headerNavigation = this;
 			this.$confirm({
@@ -117,11 +115,10 @@ export default {
 			});
 		},
 		userLogout() {
-			this.$store.dispatch('userStore/LOGOUT');
-			// clearAllCookies();
-			this.$router.history.current.fullPath === '/'
-				? this.$router.go()
-				: this.$router.push('/');
+			this.$store.dispatch('userStore/LOGOUT', this.userEmail);
+			// this.$router.history.current.fullPath === '/'
+			// 	? this.$router.go()
+			// 	: this.$router.push('/');
 		},
 		test() {
 			this.$store.dispatch('userStore/TEST');
