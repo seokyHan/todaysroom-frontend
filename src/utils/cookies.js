@@ -43,13 +43,6 @@ function getIdFromCookie() {
 	);
 }
 
-function getUserEmailFromCookie() {
-	return document.cookie.replace(
-		/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/,
-		'$1',
-	);
-}
-
 function getRecentSearchFromCookie() {
 	return document.cookie.replace(
 		/(?:(?:^|.*;\s*)recentSearch\s*=\s*([^;]*).*$)|^.*$/,
@@ -86,7 +79,6 @@ export {
 	getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
-	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	//getAuthorityFromCookie,
 	deleteCookie,

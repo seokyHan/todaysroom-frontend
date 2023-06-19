@@ -75,18 +75,18 @@ const userStore = {
 			const {data} = await userLogin(loginUserData);
 
 			commit('SET_TOKEN', data.accessToken);
-			commit('SET_ID', data.id);
+			commit('SET_ID', data.userEmail);
 			commit('SET_NICKNAME', data.nickname);
 			commit('SET_RECENT_SEARCH', data.recentSearch);
 
 			saveAuthToCookie(data.accessToken);
-			saveIdToCookie(data.id);
+			saveIdToCookie(data.userEmail);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			//saveAuthorityToCookie(data.authority);
 		},
-		async LOGOUT({commit}, userEmail) {
-			await userLogOut(userEmail);
+		async LOGOUT({commit}) {
+			await userLogOut();
 
 			commit('CLEAR_ALL');
 
