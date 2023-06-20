@@ -3,11 +3,13 @@ import {
 	getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
+	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	//getAuthorityFromCookie,
 	saveAuthToCookie,
 	saveUserToCookie,
 	saveIdToCookie,
+	saveUserEmailToCookie,
 	saveRecentSearchToCookie,
 	//saveAuthorityToCookie,
 	clearAllCookies,
@@ -18,6 +20,7 @@ const userStore = {
 	state: {
 		accessToken: getAuthFromCookie() || '',
 		id: getIdFromCookie() || '',
+		userEmail: getUserEmailFromCookie() || '',
 		nickname: getUserFromCookie() || '',
 		recentSearch: getRecentSearchFromCookie() || '',
 		likedAptCodes: [],
@@ -47,8 +50,8 @@ const userStore = {
 		SET_TOKEN(state, accessToken) {
 			state.accessToken = accessToken;
 		},
-		SET_RTK(state, refreshToken) {
-			state.refreshToken = refreshToken;
+		SET_USEREMAIL(state, userEmail) {
+			state.userEmail = userEmail;
 		},
 		SET_ID(state, id) {
 			state.id = id;
@@ -65,6 +68,7 @@ const userStore = {
 		CLEAR_ALL(state) {
 			state.token = '';
 			state.id = '';
+			state.userEmail = '';
 			state.nickname = '';
 			state.recentSearch = '';
 			state.likedAptCodes = [];
@@ -75,18 +79,20 @@ const userStore = {
 			const {data} = await userLogin(loginUserData);
 
 			commit('SET_TOKEN', data.accessToken);
-			commit('SET_ID', data.userEmail);
+			commit('SET_ID', data.id);
+			commit('SET_USEREMAIL', data.userEmail);
 			commit('SET_NICKNAME', data.nickname);
 			commit('SET_RECENT_SEARCH', data.recentSearch);
 
 			saveAuthToCookie(data.accessToken);
-			saveIdToCookie(data.userEmail);
+			saveIdToCookie(data.id);
+			saveUserEmailToCookie(data.userEmail);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			//saveAuthorityToCookie(data.authority);
 		},
-		async LOGOUT({commit}) {
-			await userLogOut();
+		async LOGOUT({commit}, logoutUserData) {
+			await userLogOut(logoutUserData);
 
 			commit('CLEAR_ALL');
 

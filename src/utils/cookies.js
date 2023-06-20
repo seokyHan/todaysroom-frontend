@@ -50,6 +50,13 @@ function getRecentSearchFromCookie() {
 	);
 }
 
+function getUserEmailFromCookie() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)userEmail\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
 // function getAuthorityFromCookie() {
 // 	return document.cookie.replace(
 // 		/(?:(?:^|.*;\s*)authority\s*=\s*([^;]*).*$)|^.*$/,
@@ -64,6 +71,7 @@ function deleteCookie(value) {
 function clearAllCookies() {
 	deleteCookie('auth');
 	deleteCookie('id');
+	deleteCookie('userEmail');
 	deleteCookie('nickname');
 	deleteCookie('recentSearch');
 	//deleteCookie('authority');
@@ -79,6 +87,7 @@ export {
 	getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
+	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	//getAuthorityFromCookie,
 	deleteCookie,

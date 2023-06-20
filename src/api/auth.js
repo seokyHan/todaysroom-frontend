@@ -11,8 +11,8 @@ function reissue() {
 	return instance.post('/users/reissue');
 }
 
-function userLogOut() {
-	return instanceWithAuth.post('/users/logout');
+function userLogOut(logoutUserData) {
+	return instanceWithAuth.post('/users/logout', logoutUserData);
 }
 
 function userTest() {
