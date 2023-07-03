@@ -86,7 +86,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {getUserEmailFromCookie, getAuthFromCookie} from '@/utils/cookies';
+import {getAuthFromCookie} from '@/utils/cookies';
 export default {
 	computed: {
 		...mapGetters('userStore', ['getNickname', 'isLogin', 'getId']),
@@ -111,7 +111,6 @@ export default {
 		},
 		userLogout() {
 			const logoutUserData = {
-				userEmail: getUserEmailFromCookie() || '',
 				accessToken: getAuthFromCookie() || '',
 			};
 			console.log(logoutUserData);
