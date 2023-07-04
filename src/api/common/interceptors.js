@@ -1,5 +1,6 @@
 import store from '@/store/index';
 import {reissue} from '../auth';
+import {saveAuthToCookie} from '@/utils/cookies';
 
 export function setInterceptors(instance) {
 	instance.interceptors.request.use(
@@ -26,10 +27,7 @@ export function setInterceptors(instance) {
 					.then((result) => {
 						// 토큰 재발급 후 저장
 						store.commit('userStore/SET_TOKEN', result.data.accessToken);
-						console.log('결과3 ' + result.data.accessToken);
-						console.log('코드3 ' + errorCode);
-						console.log('메세지3 ' + error.response.data.message);
-						console.log('토큰 ' + store.getters['userStore/getToken']);
+						saveAuthToCookie(result.data.accessToken);
 					})
 					.catch((error) => {
 						// 에러났을 경우

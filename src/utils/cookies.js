@@ -71,7 +71,7 @@ function deleteCookie(value) {
 function clearAllCookies() {
 	deleteCookie('auth');
 	deleteCookie('id');
-	deleteCookie('userEmail');
+	//deleteCookie('userEmail');
 	deleteCookie('nickname');
 	deleteCookie('recentSearch');
 	//deleteCookie('authority');

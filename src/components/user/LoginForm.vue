@@ -24,8 +24,7 @@
 		</div>
 		<div class="login-form__btn-group">
 			<div class="btn-group__save-id">
-				<!-- <input type="checkbox" id="save-id-check" v-model="saveIdStatus" /> -->
-				<input type="checkbox" id="save-id-check" />
+				<input type="checkbox" id="save-id-check" v-model="saveIdStatus" />
 				<label for="save-id-check">아이디 저장</label>
 			</div>
 			<div class="btn-group__nav">
@@ -41,19 +40,18 @@
 </template>
 
 <script>
-// import {
-// 	saveUserEmailToCookie,
-// 	getUserEmailFromCookie,
-// 	deleteCookie,
-// } from '@/utils/cookies';
+import {
+	saveUserEmailToCookie,
+	getUserEmailFromCookie,
+	deleteCookie,
+} from '@/utils/cookies';
 import Swal from 'sweetalert2';
 export default {
 	data() {
 		return {
-			// userEmail: getUserEmailFromCookie() || '',
-			userEmail: '',
+			userEmail: getUserEmailFromCookie() || '',
 			password: '',
-			// saveIdStatus: getUserEmailFromCookie() && true,
+			saveIdStatus: getUserEmailFromCookie() && true,
 		};
 	},
 	methods: {
@@ -63,9 +61,9 @@ export default {
 					userEmail: this.userEmail,
 					password: this.password,
 				};
-				// this.saveIdStatus
-				// 	? saveUserEmailToCookie(this.userEmail)
-				// 	: deleteCookie('userEmail');
+				this.saveIdStatus
+					? saveUserEmailToCookie(this.userEmail)
+					: deleteCookie('userEmail');
 				await this.$store.dispatch('userStore/LOGIN', loginUserData);
 				Swal.fire({
 					position: 'center',

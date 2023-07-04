@@ -9,10 +9,9 @@ import {
 	saveAuthToCookie,
 	saveUserToCookie,
 	saveIdToCookie,
-	saveUserEmailToCookie,
+	//saveUserEmailToCookie,
 	saveRecentSearchToCookie,
 	//saveAuthorityToCookie,
-	clearAllCookies,
 } from '@/utils/cookies';
 
 const userStore = {
@@ -86,7 +85,7 @@ const userStore = {
 
 			saveAuthToCookie(data.accessToken);
 			saveIdToCookie(data.id);
-			saveUserEmailToCookie(data.userEmail);
+			//saveUserEmailToCookie(data.userEmail);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			//saveAuthorityToCookie(data.authority);
@@ -95,8 +94,6 @@ const userStore = {
 			await userLogOut(logoutUserData);
 
 			commit('CLEAR_ALL');
-
-			clearAllCookies();
 		},
 		async TEST() {
 			const t = await userTest();
