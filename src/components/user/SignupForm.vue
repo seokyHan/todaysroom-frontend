@@ -79,6 +79,7 @@ export default {
 		};
 	},
 };
+
 // import {registerUser, checkDuplicate} from '@/api/auth';
 // import Swal from 'sweetalert2';
 // export default {
