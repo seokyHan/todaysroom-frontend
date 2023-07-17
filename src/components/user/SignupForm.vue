@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import {registerUser, checkDuplicate} from '@/api/auth';
+import {signupUser, checkDuplicate} from '@/api/auth';
 import Swal from 'sweetalert2';
 export default {
 	data() {
@@ -134,7 +134,7 @@ export default {
 					nickname: this.nickname,
 					password: this.password,
 				};
-				await registerUser(signupUserData);
+				await signupUser(signupUserData);
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
