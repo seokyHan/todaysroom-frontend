@@ -45,7 +45,8 @@ import {
 	getUserEmailFromCookie,
 	deleteCookie,
 } from '@/utils/cookies';
-import Swal from 'sweetalert2';
+import {showAlert} from '@/utils/alertUtils';
+
 export default {
 	data() {
 		return {
@@ -65,25 +66,10 @@ export default {
 					? saveUserEmailToCookie(this.userEmail)
 					: deleteCookie('userEmail');
 				await this.$store.dispatch('userStore/LOGIN', loginUserData);
-				Swal.fire({
-					position: 'center',
-					icon: 'success',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">로그인 완료<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('로그인 성공.', 'success', 1500);
 				this.$router.push('/');
 			} catch (error) {
-				console.log(error);
-				Swal.fire({
-					position: 'center',
-					icon: 'warning',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">아이디 또는 비밀번호가 일치하지 않습니다.<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('아이디 또는 비밀번호가 일치하지 않습니다.', 'warning', 1500);
 			} finally {
 				this.initForm();
 			}

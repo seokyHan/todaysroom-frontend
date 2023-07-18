@@ -68,7 +68,7 @@
 
 <script>
 import {signupUser, checkDuplicate} from '@/api/auth';
-import Swal from 'sweetalert2';
+import {showAlert} from '@/utils/alertUtils';
 export default {
 	data() {
 		return {
@@ -89,7 +89,6 @@ export default {
 	},
 	methods: {
 		async submitSignupForm() {
-			console.log('click');
 			if (
 				this.userEmail === '' ||
 				this.userName === '' ||
@@ -97,34 +96,13 @@ export default {
 				this.password === '' ||
 				this.passwordConfirm === ''
 			) {
-				Swal.fire({
-					position: 'center',
-					icon: 'warning',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">회원가입 폼을 모두 입력하세요.<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('회원가입 폼을 모두 입력하세요.', 'warning', 1500);
 				return;
 			} else if (!this.checkDuplicateStatus) {
-				Swal.fire({
-					position: 'center',
-					icon: 'warning',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">이메일 중복 확인을 진행하세요.<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('이메일 중복 확인을 진행하세요.', 'warning', 1500);
 				return;
 			} else if (this.password !== this.passwordConfirm) {
-				Swal.fire({
-					position: 'center',
-					icon: 'warning',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">비밀번호가 일치하지 않습니다.<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('비밀번호가 일치하지 않습니다.', 'warning', 1500);
 				return;
 			}
 			try {
@@ -135,25 +113,11 @@ export default {
 					password: this.password,
 				};
 				await signupUser(signupUserData);
-				Swal.fire({
-					position: 'center',
-					icon: 'success',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">회원가입 완료<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert('회원가입 완료', 'success', 1500);
 				this.$router.push('/login');
 			} catch (error) {
 				const errorMessage = error.data;
-				Swal.fire({
-					position: 'center',
-					icon: 'error',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${errorMessage}<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert(errorMessage, 'error', 1500);
 			} finally {
 				this.initForm();
 			}
@@ -166,34 +130,13 @@ export default {
 				const {data} = await checkDuplicate(emailData);
 				this.checkDuplicateStatus = true;
 				if (data) {
-					Swal.fire({
-						position: 'center',
-						icon: 'success',
-						width: 350,
-						title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">사용 가능한 이메일입니다.<div>`,
-						showConfirmButton: false,
-						timer: 1500,
-					});
+					showAlert('사용 가능한 이메일입니다.', 'success', 1500);
 				} else {
-					Swal.fire({
-						position: 'center',
-						icon: 'error',
-						width: 350,
-						title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">이미 등록된 이메일입니다.<div>`,
-						showConfirmButton: false,
-						timer: 1500,
-					});
+					showAlert('이미 등록된 이메일입니다.', 'error', 1500);
 					this.userEmail = '';
 				}
 			} catch (error) {
-				Swal.fire({
-					position: 'center',
-					icon: 'error',
-					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${error}<div>`,
-					showConfirmButton: false,
-					timer: 1500,
-				});
+				showAlert(error, 'error', 1500);
 			}
 		},
 		initForm() {
