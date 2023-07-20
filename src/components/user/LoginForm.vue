@@ -35,6 +35,15 @@
 				<RouterLink to="#">비밀번호 재설정</RouterLink>
 			</div>
 		</div>
+		<div>
+			<a href="http://localhost:9000/oauth2/authorization/kakao">Kakao Login</a
+			><br />
+			<a href="http://localhost:9000/oauth2/authorization/google"
+				>Google Login</a
+			><br />
+			<a href="http://localhost:9000/oauth2/authorization/naver">Naver Login</a
+			><br />
+		</div>
 		<button type="submit" class="login-form__submit-btn">로그인</button>
 	</form>
 </template>
