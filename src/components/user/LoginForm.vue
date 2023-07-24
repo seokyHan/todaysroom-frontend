@@ -35,15 +35,15 @@
 				<RouterLink to="#">비밀번호 재설정</RouterLink>
 			</div>
 		</div>
-		<div>
+		<div class="ouath-group">
+			<a href="http://localhost:9000/oauth2/authorization/kakao">
+				<img class="bi me-2" width="55" height="55" src="@/images/kakao.png" />
+			</a>
 			<a href="http://localhost:9000/oauth2/authorization/google">
 				<img class="bi me-2" width="55" height="55" src="@/images/google.png" />
 			</a>
 			<a href="http://localhost:9000/oauth2/authorization/naver">
 				<img class="bi me-2" width="55" height="55" src="@/images/naver.png" />
-			</a>
-			<a href="http://localhost:9000/oauth2/authorization/kakao">
-				<img class="bi me-2" width="55" height="55" src="@/images/kakao.png" />
 			</a>
 		</div>
 		<button type="submit" class="login-form__submit-btn">로그인</button>

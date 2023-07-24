@@ -81,7 +81,14 @@ export default {
 			ageTermStatus: false,
 			serviceTermStatus: false,
 			infoTermStatus: false,
+			oauthStatus: false,
 		};
+	},
+	created() {
+		const params = new URLSearchParams(window.location.search);
+		if (params.has('oauth_success') && params.get('oauth_success') === 'true') {
+			this.oauthStatus = true;
+		}
 	},
 	computed: {
 		isCheckedTerms() {
@@ -103,7 +110,7 @@ export default {
 			}
 		},
 		submitTerms() {
-			this.$emit('submitTerms');
+			this.$emit('submitTerms', this.oauthStatus);
 		},
 	},
 };

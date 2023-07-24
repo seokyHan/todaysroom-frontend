@@ -98,6 +98,12 @@ $blue: #326cf9;
 		}
 	}
 
+	.ouath-group{
+		display: flex;
+		justify-content: center;
+		margin-bottom: 20px;
+	}
+
 	.login-form__submit-btn {
 		width: 100%;
 		min-width: 80px;
