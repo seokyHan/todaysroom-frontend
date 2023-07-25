@@ -36,13 +36,13 @@
 			</div>
 		</div>
 		<div class="ouath-group">
-			<div class="kakao" @click="oauth2Test('kakao')">
+			<div class="kakao" @click="oauth2Login('kakao')">
 				<img class="bi me-2" width="55" height="55" src="@/images/kakao.png" />
 			</div>
-			<div class="google" @click="oauth2Test('google')">
+			<div class="google" @click="oauth2Login('google')">
 				<img class="bi me-2" width="55" height="55" src="@/images/google.png" />
 			</div>
-			<div class="naver" @click="oauth2Test('naver')">
+			<div class="naver" @click="oauth2Login('naver')">
 				<img class="bi me-2" width="55" height="55" src="@/images/naver.png" />
 			</div>
 		</div>
@@ -89,8 +89,8 @@ export default {
 			this.userEmail = '';
 			this.password = '';
 		},
-		oauth2Test(test) {
-			console.log(test);
+		oauth2Login(socialType) {
+			this.$store.dispatch('userStore/OAUTH2_LOGIN', socialType);
 		},
 	},
 };

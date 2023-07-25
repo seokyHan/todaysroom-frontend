@@ -1,4 +1,4 @@
-import {userLogOut, userLogin, userTest} from '@/api/auth';
+import {userLogOut, userLogin, oauth2Login, userTest} from '@/api/auth';
 import {
 	getAuthFromCookie,
 	getUserFromCookie,
@@ -94,6 +94,11 @@ const userStore = {
 			await userLogOut(logoutUserData);
 
 			commit('CLEAR_ALL');
+		},
+		async OAUTH2_LOGIN({commit}, socialType) {
+			const response = await oauth2Login(socialType);
+			console.log(response);
+			commit('SET_TOKEN', response);
 		},
 		async TEST() {
 			const t = await userTest();
