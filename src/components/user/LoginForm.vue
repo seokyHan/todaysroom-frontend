@@ -36,15 +36,15 @@
 			</div>
 		</div>
 		<div class="ouath-group">
-			<a href="http://localhost:9000/oauth2/authorization/kakao">
+			<div class="kakao" @click="oauth2Test('kakao')">
 				<img class="bi me-2" width="55" height="55" src="@/images/kakao.png" />
-			</a>
-			<a href="http://localhost:9000/oauth2/authorization/google">
+			</div>
+			<div class="google" @click="oauth2Test('google')">
 				<img class="bi me-2" width="55" height="55" src="@/images/google.png" />
-			</a>
-			<a href="http://localhost:9000/oauth2/authorization/naver">
+			</div>
+			<div class="naver" @click="oauth2Test('naver')">
 				<img class="bi me-2" width="55" height="55" src="@/images/naver.png" />
-			</a>
+			</div>
 		</div>
 		<button type="submit" class="login-form__submit-btn">로그인</button>
 	</form>
@@ -88,6 +88,9 @@ export default {
 		initForm() {
 			this.userEmail = '';
 			this.password = '';
+		},
+		oauth2Test(test) {
+			console.log(test);
 		},
 	},
 };
