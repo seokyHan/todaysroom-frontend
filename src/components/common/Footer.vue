@@ -51,13 +51,13 @@
 						<RouterLink to="#">
 							<AIcon type="facebook" />
 						</RouterLink>
-						<RouterLink to="https://www.instagram.com/jeonghwan.dev">
+						<RouterLink to="#">
 							<AIcon type="instagram" />
 						</RouterLink>
 						<RouterLink to="#">
 							<AIcon type="twitter" />
 						</RouterLink>
-						<RouterLink to="https://github.com/today-real-estate">
+						<RouterLink to="#">
 							<AIcon type="github" />
 						</RouterLink>
 					</div>

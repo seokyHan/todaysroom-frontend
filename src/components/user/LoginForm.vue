@@ -36,15 +36,15 @@
 			</div>
 		</div>
 		<div class="ouath-group">
-			<div class="kakao" @click="oauth2Login('kakao')">
+			<a :href="getOAuthUrl('kakao')">
 				<img class="bi me-2" width="55" height="55" src="@/images/kakao.png" />
-			</div>
-			<div class="google" @click="oauth2Login('google')">
+			</a>
+			<a :href="getOAuthUrl('google')">
 				<img class="bi me-2" width="55" height="55" src="@/images/google.png" />
-			</div>
-			<div class="naver" @click="oauth2Login('naver')">
+			</a>
+			<a :href="getOAuthUrl('naver')">
 				<img class="bi me-2" width="55" height="55" src="@/images/naver.png" />
-			</div>
+			</a>
 		</div>
 		<button type="submit" class="login-form__submit-btn">로그인</button>
 	</form>
@@ -61,6 +61,7 @@ import {showAlert} from '@/utils/alertUtils';
 export default {
 	data() {
 		return {
+			baseUrl: process.env.VUE_APP_API_URL,
 			userEmail: getUserEmailFromCookie() || '',
 			password: '',
 			saveIdStatus: getUserEmailFromCookie() && true,
@@ -89,8 +90,8 @@ export default {
 			this.userEmail = '';
 			this.password = '';
 		},
-		oauth2Login(socialType) {
-			this.$store.dispatch('userStore/OAUTH2_LOGIN', socialType);
+		getOAuthUrl(provider) {
+			return `${this.baseUrl}/oauth2/authorization/${provider}`;
 		},
 	},
 };

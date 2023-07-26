@@ -14,10 +14,6 @@ function userLogin(userData) {
 	return instance.post('/users/login', userData);
 }
 
-function oauth2Login(socialType) {
-	return instance.post(`/oauth2/authorization/${socialType}`);
-}
-
 function reissue() {
 	return instance.post('/users/reissue');
 }
@@ -30,12 +26,4 @@ function userTest() {
 	return instanceWithAuth.post('/users/test');
 }
 
-export {
-	signupUser,
-	checkDuplicate,
-	userLogin,
-	oauth2Login,
-	reissue,
-	userLogOut,
-	userTest,
-};
+export {signupUser, checkDuplicate, userLogin, reissue, userLogOut, userTest};
