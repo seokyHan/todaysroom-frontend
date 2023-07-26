@@ -88,6 +88,12 @@
 import {mapGetters} from 'vuex';
 import {getAuthFromCookie, clearAllCookies} from '@/utils/cookies';
 export default {
+	created() {
+		const params = new URLSearchParams(window.location.search);
+		if (params.has('socialLogin') && params.get('socialLogin') === 'success') {
+			console.log(1);
+		}
+	},
 	computed: {
 		...mapGetters('userStore', ['getNickname', 'isLogin', 'getId']),
 	},

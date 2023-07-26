@@ -86,7 +86,7 @@ export default {
 	},
 	created() {
 		const params = new URLSearchParams(window.location.search);
-		if (params.has('oauth_success') && params.get('oauth_success') === 'true') {
+		if (params.has('oauth') && params.get('oauth') === 'success') {
 			this.oauthStatus = true;
 		}
 	},
