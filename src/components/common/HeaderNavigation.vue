@@ -86,12 +86,15 @@
 
 <script>
 import {mapGetters} from 'vuex';
-import {getAuthFromCookie, clearAllCookies} from '@/utils/cookies';
+import {
+	getSocialLoginFromCookie,
+	getAuthFromCookie,
+	clearAllCookies,
+} from '@/utils/cookies';
 export default {
 	created() {
-		const params = new URLSearchParams(window.location.search);
-		if (params.has('socialLogin') && params.get('socialLogin') === 'success') {
-			console.log(1);
+		if (getSocialLoginFromCookie() === 'success') {
+			// Role이 User인 유저가 social로그인 성공했을 경우
 		}
 	},
 	computed: {

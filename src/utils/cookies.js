@@ -22,6 +22,20 @@ function saveRecentSearchToCookie(value) {
 // 	document.cookie = `authority=${value}`;
 // }
 
+function getOauthFromCookie() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)oauth2\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
+function getSocialLoginFromCookie() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)socialLogin\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
 function getAuthFromCookie() {
 	return document.cookie.replace(
 		/(?:(?:^|.*;\s*)auth\s*=\s*([^;]*).*$)|^.*$/,
@@ -84,6 +98,8 @@ export {
 	saveUserEmailToCookie,
 	saveRecentSearchToCookie,
 	//saveAuthorityToCookie,
+	getOauthFromCookie,
+	getSocialLoginFromCookie,
 	getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,

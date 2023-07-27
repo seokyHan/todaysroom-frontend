@@ -74,6 +74,8 @@
 </template>
 
 <script>
+import {getOauthFromCookie} from '@/utils/cookies';
+
 export default {
 	data() {
 		return {
@@ -85,10 +87,14 @@ export default {
 		};
 	},
 	created() {
-		const params = new URLSearchParams(window.location.search);
-		if (params.has('oauth') && params.get('oauth') === 'success') {
+		if (getOauthFromCookie() === 'success') {
 			this.oauthStatus = true;
 		}
+
+		console.log('1 : ' + getOauthFromCookie());
+		// 쿠키 지우는 타이밍 잘 생각해야할 듯?
+		// deleteCookie('isLogin');
+		//console.log('2 : ' + getOauthLoginCheck());
 	},
 	computed: {
 		isCheckedTerms() {
