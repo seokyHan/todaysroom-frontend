@@ -94,7 +94,7 @@ import {
 export default {
 	created() {
 		if (getSocialLoginFromCookie() === 'success') {
-			// Role이 User인 유저가 social로그인 성공했을 경우
+			// Role이 User인 유저가 social로그인 성공했을 경우 체크
 		}
 	},
 	computed: {
