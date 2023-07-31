@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {signupUser} from '@/api/auth';
+//import {socialUserSignup} from '@/api/auth';
 import {showAlert} from '@/utils/alertUtils';
 export default {
 	data() {
@@ -41,13 +41,13 @@ export default {
 				return;
 			}
 			try {
-				const signupUserData = {
-					userEmail: this.userEmail,
-					nickname: this.nickname,
-				};
-				await signupUser(signupUserData);
+				// const signupUserData = {
+				// 	nickname: this.nickname,
+				// };
+				//await socialUserSignup(signupUserData);
 				showAlert('회원가입 완료', 'success', 1500);
-				this.$router.push('/login');
+				// ToDo 회원가입 폼 모두 입력하고 state 값 저장
+				this.$router.push('/');
 			} catch (error) {
 				const errorMessage = error.data;
 				showAlert(errorMessage, 'error', 1500);
