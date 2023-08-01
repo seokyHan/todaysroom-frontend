@@ -1,4 +1,4 @@
-import {userLogOut, userLogin, userTest} from '@/api/auth';
+import {userLogOut, userLogin, socialUserSignup, userTest} from '@/api/auth';
 import {
 	getAuthFromCookie,
 	getUserFromCookie,
@@ -76,6 +76,22 @@ const userStore = {
 	actions: {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
+
+			commit('SET_TOKEN', data.accessToken);
+			commit('SET_ID', data.id);
+			commit('SET_USEREMAIL', data.userEmail);
+			commit('SET_NICKNAME', data.nickname);
+			commit('SET_RECENT_SEARCH', data.recentSearch);
+
+			saveAuthToCookie(data.accessToken);
+			saveIdToCookie(data.id);
+			//saveUserEmailToCookie(data.userEmail);
+			saveUserToCookie(data.nickname);
+			saveRecentSearchToCookie(data.recentSearch);
+			//saveAuthorityToCookie(data.authority);
+		},
+		async SOCIALSIGNUP({commit}, signupUserData) {
+			const {data} = await socialUserSignup(signupUserData);
 
 			commit('SET_TOKEN', data.accessToken);
 			commit('SET_ID', data.id);

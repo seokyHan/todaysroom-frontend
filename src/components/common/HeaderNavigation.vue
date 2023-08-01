@@ -89,13 +89,27 @@ import {mapGetters} from 'vuex';
 import {
 	getSocialLoginFromCookie,
 	getAuthFromCookie,
+	getIdFromCookie,
+	getUserEmailFromCookie,
+	getRecentSearchFromCookie,
+	getUserFromCookie,
+	deleteCookie,
 	clearAllCookies,
 } from '@/utils/cookies';
 export default {
 	created() {
 		if (getSocialLoginFromCookie() === 'success') {
 			// Role이 User인 유저가 social로그인 성공했을 경우 체크
+			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
+			this.$store.commit('userStore/SET_ID', getIdFromCookie());
+			this.$store.commit('userStore/SET_NICKNAME', getUserFromCookie());
+			this.$store.commit('userStore/SET_USEREMAIL', getUserEmailFromCookie());
+			this.$store.commit(
+				'userStore/SET_RECENT_SEARCH',
+				getRecentSearchFromCookie(),
+			);
 		}
+		deleteCookie('socialLogin');
 	},
 	computed: {
 		...mapGetters('userStore', ['getNickname', 'isLogin', 'getId']),

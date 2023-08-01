@@ -92,12 +92,6 @@ export default {
 		}
 
 		this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
-
-		console.log('1 : ' + getOauthFromCookie());
-		console.log('2 : ' + getAuthFromCookie());
-		// 쿠키 지우는 타이밍 잘 생각해야할 듯?
-		// deleteCookie('isLogin');
-		//console.log('2 : ' + getOauthLoginCheck());
 	},
 	computed: {
 		isCheckedTerms() {

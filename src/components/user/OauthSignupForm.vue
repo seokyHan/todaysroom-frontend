@@ -26,8 +26,8 @@
 </template>
 
 <script>
-//import {socialUserSignup} from '@/api/auth';
 import {showAlert} from '@/utils/alertUtils';
+import {deleteCookie} from '@/utils/cookies';
 export default {
 	data() {
 		return {
@@ -41,12 +41,13 @@ export default {
 				return;
 			}
 			try {
-				// const signupUserData = {
-				// 	nickname: this.nickname,
-				// };
-				//await socialUserSignup(signupUserData);
+				const signupUserData = {
+					nickname: this.nickname,
+				};
+
+				await this.$store.dispatch('userStore/SOCIALSIGNUP', signupUserData);
+				deleteCookie('oauth2');
 				showAlert('회원가입 완료', 'success', 1500);
-				// ToDo 회원가입 폼 모두 입력하고 state 값 저장
 				this.$router.push('/');
 			} catch (error) {
 				const errorMessage = error.data;
