@@ -182,7 +182,7 @@ export default {
 
 				await updateInquiry(updatedInquiryData);
 				this.initForm();
-
+				console.log(updatedInquiryData);
 				showAlert('1대1 문의 수정 완료', 'success', 1500);
 
 				this.$router.push('/account/inquiry-list');
