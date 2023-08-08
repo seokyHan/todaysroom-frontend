@@ -12,9 +12,6 @@
 			</RouterLink>
 		</template>
 		<template v-else>
-			<button type="button" @click="test" class="login-form__submit-btn">
-				테스트
-			</button>
 			<div class="header__user">
 				<ADropdown-button size="large">
 					{{ getNickname }}
@@ -142,9 +139,6 @@ export default {
 			this.$router.history.current.fullPath === '/'
 				? this.$router.go()
 				: this.$router.push('/');
-		},
-		test() {
-			this.$store.dispatch('userStore/TEST');
 		},
 	},
 };
