@@ -138,7 +138,7 @@ export default {
 					title: this.inquiry.title,
 					content: this.inquiry.content,
 				};
-
+				console.log(inquiryData);
 				await registerInquiry(inquiryData);
 				this.initForm();
 
