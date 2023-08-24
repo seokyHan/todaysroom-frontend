@@ -39,18 +39,49 @@
 				<li class="inquiry-form__item">
 					<div class="item__title">사진</div>
 					<div class="item__uploader">
-						<div class="item__uploader__input">
+						<div
+							class="item__uploader__input"
+							@dragover="onDragOver"
+							@drop="onDrop"
+						>
 							<AIcon type="camera" />
 							<input
 								type="file"
-								accept="image/png, image/jpeg, image/jpg"
-								id="inquiry__file"
-								style="display: none"
+								accept="image/*"
+								class="inquiry_file"
+								@change="onChangeFiles"
+								multiple
 							/>
 						</div>
+						<div class="file-upload-list">
+							<div
+								class="file-upload-list__item"
+								v-for="(file, index) in inquiry.fileList"
+								:key="index"
+							>
+								<div class="file-upload-list__item__data">
+									<img
+										class="file-upload-list__item__data-thumbnail"
+										:src="file.src"
+									/>
+									<div class="file-upload-list__item__data-name">
+										{{ file.name }}
+									</div>
+								</div>
+								<div
+									class="file-upload-list__item__btn-remove"
+									@click="deleteFile(index)"
+								>
+									삭제
+								</div>
+							</div>
+						</div>
 						<div class="item__uploader__desc">
+							<p>
+								- 카메라 이미지 클릭 및 사진을 드래그 하여 업로드 가능합니다.
+							</p>
 							<p>- 사진 용량은 10MB 까지 등록이 가능합니다.</p>
-							<p>- 사진은 최대 1장까지 등록이 가능합니다.</p>
+							<p>- 사진은 최대 5장까지 등록이 가능합니다.</p>
 						</div>
 					</div>
 				</li>
@@ -108,7 +139,7 @@ export default {
 				inquiryType: '',
 				title: '',
 				content: '',
-				file: '',
+				fileList: [],
 			},
 			onEdit: false,
 			editInquiryId: '',
@@ -190,6 +221,43 @@ export default {
 
 				showAlert(`${errorMessage}`, 'error', 1500);
 			}
+		},
+		// FileReader를 통해 파일을 읽어 thumbnail 영역의 src 값으로 셋팅
+		async readFiles(files) {
+			return new Promise((resolve) => {
+				const reader = new FileReader();
+				reader.onload = async (e) => {
+					resolve(e.target.result);
+				};
+				reader.readAsDataURL(files);
+			});
+		},
+		async addFiles(files) {
+			for (let i = 0; i < files.length; i++) {
+				const src = await this.readFiles(files[i]);
+				files[i].src = src;
+				this.inquiry.fileList.push(files);
+			}
+		},
+		onDragOver(e) {
+			e.preventDefault();
+		},
+		deleteFile(idx) {
+			this.inquiry.fileList.splice(idx, 1);
+		},
+		deleteAllFile() {
+			this.inquiry.fileList = [];
+		},
+		onChangeFiles(e) {
+			this.inquiry.fileList.push(...e.target.files);
+			const files = e.target.files;
+			this.addFiles(files);
+		},
+		onDrop(e) {
+			e.preventDefault();
+			this.inquiry.fileList.push(...e.dataTransfer.files);
+			const files = e.dataTransfer.files;
+			this.addFiles(files);
 		},
 	},
 };
