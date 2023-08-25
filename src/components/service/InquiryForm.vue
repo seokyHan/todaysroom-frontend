@@ -53,6 +53,14 @@
 								multiple
 							/>
 						</div>
+						<template v-if="inquiry.fileList.length > 0">
+							<div
+								class="file-upload-list__item__btn-all-remove"
+								@click="deleteAllFile(index)"
+							>
+								전체 삭제
+							</div>
+						</template>
 						<div class="file-upload-list">
 							<div
 								class="file-upload-list__item"
@@ -68,12 +76,11 @@
 										{{ file.name }}
 									</div>
 								</div>
-								<div
+								<AIcon
+									type="close"
 									class="file-upload-list__item__btn-remove"
 									@click="deleteFile(index)"
-								>
-									삭제
-								</div>
+								/>
 							</div>
 						</div>
 						<div class="item__uploader__desc">
@@ -233,10 +240,10 @@ export default {
 			});
 		},
 		async addFiles(files) {
-			for (let i = 0; i < files.length; i++) {
-				const src = await this.readFiles(files[i]);
-				files[i].src = src;
-				this.inquiry.fileList.push(files);
+			for (const file of files) {
+				const src = await this.readFiles(file);
+				file.src = src;
+				this.inquiry.fileList.push(file);
 			}
 		},
 		onDragOver(e) {
@@ -249,13 +256,11 @@ export default {
 			this.inquiry.fileList = [];
 		},
 		onChangeFiles(e) {
-			this.inquiry.fileList.push(...e.target.files);
 			const files = e.target.files;
 			this.addFiles(files);
 		},
 		onDrop(e) {
 			e.preventDefault();
-			this.inquiry.fileList.push(...e.dataTransfer.files);
 			const files = e.dataTransfer.files;
 			this.addFiles(files);
 		},
