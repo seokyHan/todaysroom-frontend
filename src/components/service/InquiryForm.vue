@@ -56,7 +56,7 @@
 						<template v-if="inquiry.fileList.length > 0">
 							<div
 								class="file-upload-list__item__btn-all-remove"
-								@click="deleteAllFile(index)"
+								@click="deleteAllFile()"
 							>
 								전체 삭제
 							</div>
@@ -84,9 +84,7 @@
 							</div>
 						</div>
 						<div class="item__uploader__desc">
-							<p>
-								- 카메라 이미지 클릭 및 사진을 드래그 하여 업로드 가능합니다.
-							</p>
+							<p>- 카메라 이미지 클릭 및 사진을 드래그 하여 업로드 해주세요.</p>
 							<p>- 사진 용량은 10MB 까지 등록이 가능합니다.</p>
 							<p>- 사진은 최대 5장까지 등록이 가능합니다.</p>
 						</div>
@@ -132,7 +130,7 @@
 
 <script>
 import {
-	registerInquiry,
+	//registerInquiry,
 	getInquiryItemDetail,
 	updateInquiry,
 } from '@/api/inquiry';
@@ -175,8 +173,10 @@ export default {
 					inquiryType: this.inquiry.inquiryType,
 					title: this.inquiry.title,
 					content: this.inquiry.content,
+					fileList: this.inquiry.fileList,
 				};
-				await registerInquiry(inquiryData);
+				console.log(inquiryData);
+				//await registerInquiry(inquiryData);
 				this.initForm();
 
 				showAlert('1대1 문의 등록 완료.', 'success', 1500);
@@ -240,6 +240,10 @@ export default {
 			});
 		},
 		async addFiles(files) {
+			if (this.inquiry.fileList.length >= 5) {
+				showAlert('이미지는 최대 5장까지 등록 가능합니다.', 'warning', 1500);
+				return;
+			}
 			for (const file of files) {
 				const src = await this.readFiles(file);
 				file.src = src;
