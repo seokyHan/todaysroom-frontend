@@ -83,6 +83,7 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import {showAlert} from '@/utils/alertUtils';
 import {
 	getSocialLoginFromCookie,
 	getAuthFromCookie,
@@ -96,10 +97,13 @@ import {
 export default {
 	created() {
 		if (getSocialLoginFromCookie() === 'success') {
-			// Role이 User인 유저가 social로그인 성공했을 경우 체크
+			showAlert('회원가입이 완료되었습니다.', 'success', 1500);
 			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 			this.$store.commit('userStore/SET_ID', getIdFromCookie());
-			this.$store.commit('userStore/SET_NICKNAME', getUserFromCookie());
+			this.$store.commit(
+				'userStore/SET_NICKNAME',
+				decodeURI(getUserFromCookie()),
+			);
 			this.$store.commit('userStore/SET_USEREMAIL', getUserEmailFromCookie());
 			this.$store.commit(
 				'userStore/SET_RECENT_SEARCH',
@@ -133,7 +137,6 @@ export default {
 			const logoutUserData = {
 				accessToken: getAuthFromCookie() || '',
 			};
-			console.log(logoutUserData);
 			this.$store.dispatch('userStore/LOGOUT', logoutUserData);
 			clearAllCookies();
 			this.$router.history.current.fullPath === '/'

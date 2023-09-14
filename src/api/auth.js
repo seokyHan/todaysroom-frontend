@@ -4,9 +4,9 @@ function signupUser(userData) {
 	return instance.post('/users/signup', userData);
 }
 
-function socialUserSignup(userData) {
-	return instanceWithAuth.post('/users/social/signup', userData);
-}
+// function socialUserSignup(userData) {
+// 	return instanceWithAuth.post('/users/social/signup', userData);
+// }
 
 function checkDuplicate(email) {
 	return instance.get('/users/email-check', {params: email});
@@ -32,7 +32,7 @@ function userTest() {
 
 export {
 	signupUser,
-	socialUserSignup,
+	// socialUserSignup,
 	checkDuplicate,
 	userLogin,
 	reissue,
