@@ -40,7 +40,7 @@ const userStore = {
 			return state.id;
 		},
 		getNickname(state) {
-			return state.nickname;
+			return decodeURI(state.nickname);
 		},
 		getRecentSearch(state) {
 			return state.recentSearch;

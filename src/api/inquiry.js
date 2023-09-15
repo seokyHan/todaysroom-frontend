@@ -5,7 +5,9 @@ function getAllInquiryList() {
 }
 
 function registerInquiry(inquiryData) {
-	return instanceWithAuth.post('/inquiries/create', inquiryData);
+	return instanceWithAuth.post('/inquiries/create', inquiryData, {
+		isFileUploadRequest: true,
+	});
 }
 
 function getInquiryList(params) {

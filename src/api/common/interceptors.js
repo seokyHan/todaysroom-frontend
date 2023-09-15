@@ -10,6 +10,10 @@ export function setInterceptors(instance) {
 				config.headers.Authorization =
 					process.env.VUE_APP_API_TOKEN_PREFIX + ' ' + token;
 			}
+
+			if (config.isFileUploadRequest) {
+				config.headers['Content-Type'] = 'multipart/form-data';
+			}
 			return config;
 		},
 		function (error) {

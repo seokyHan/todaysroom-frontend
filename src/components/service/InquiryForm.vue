@@ -130,7 +130,7 @@
 
 <script>
 import {
-	//registerInquiry,
+	registerInquiry,
 	getInquiryItemDetail,
 	updateInquiry,
 } from '@/api/inquiry';
@@ -173,16 +173,25 @@ export default {
 					inquiryType: this.inquiry.inquiryType,
 					title: this.inquiry.title,
 					content: this.inquiry.content,
-					fileList: this.inquiry.fileList,
 				};
-				console.log(inquiryData);
-				//await registerInquiry(inquiryData);
+
+				let formData = new FormData();
+				this.inquiry.fileList.forEach((file) =>
+					formData.append('fileList', file),
+				);
+				formData.append(
+					'inquiryRequestDto',
+					new Blob([JSON.stringify(inquiryData)], {type: 'application/json'}),
+				);
+
+				await registerInquiry(formData);
 				this.initForm();
 
 				showAlert('1대1 문의 등록 완료.', 'success', 1500);
 
-				this.$router.push('/account/inquiry-list');
+				//this.$router.push('/account/inquiry-list');
 			} catch (error) {
+				console.log(error);
 				showAlert('필수 입력 사항을 모두 입력하세요.', 'error', 1500);
 			}
 		},
