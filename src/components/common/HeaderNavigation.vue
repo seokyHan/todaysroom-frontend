@@ -85,6 +85,7 @@
 import {mapGetters} from 'vuex';
 import {showAlert} from '@/utils/alertUtils';
 import {
+	getIsSocialLoginFirst,
 	getSocialLoginFromCookie,
 	getAuthFromCookie,
 	getIdFromCookie,
@@ -96,8 +97,13 @@ import {
 } from '@/utils/cookies';
 export default {
 	created() {
-		if (getSocialLoginFromCookie() === 'success') {
+		if (getIsSocialLoginFirst()) {
 			showAlert('회원가입이 완료되었습니다.', 'success', 1500);
+			this.$store.dispatch('userStore/SOCIALSIGNUP');
+			deleteCookie('isFirst');
+		}
+
+		if (getSocialLoginFromCookie() === 'success') {
 			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 			this.$store.commit('userStore/SET_ID', getIdFromCookie());
 			this.$store.commit(

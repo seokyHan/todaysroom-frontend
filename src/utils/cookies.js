@@ -71,6 +71,13 @@ function getUserEmailFromCookie() {
 	);
 }
 
+function getIsSocialLoginFirst() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)isFirst\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
 // function getAuthorityFromCookie() {
 // 	return document.cookie.replace(
 // 		/(?:(?:^|.*;\s*)authority\s*=\s*([^;]*).*$)|^.*$/,
@@ -104,6 +111,7 @@ export {
 	getUserFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
+	getIsSocialLoginFirst,
 	getRecentSearchFromCookie,
 	//getAuthorityFromCookie,
 	deleteCookie,
