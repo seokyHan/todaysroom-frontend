@@ -106,6 +106,8 @@ const userStore = {
 		async SOCIALSIGNUP({commit}) {
 			const {data} = await socialUserSignup();
 
+			console.log(data);
+
 			commit('SET_ID', data.id);
 			commit('SET_USEREMAIL', data.userEmail);
 			commit('SET_NICKNAME', data.nickname);

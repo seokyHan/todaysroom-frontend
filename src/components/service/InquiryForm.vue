@@ -189,9 +189,8 @@ export default {
 
 				showAlert('1대1 문의 등록 완료.', 'success', 1500);
 
-				//this.$router.push('/account/inquiry-list');
+				this.$router.push('/account/inquiry-list');
 			} catch (error) {
-				console.log(error);
 				showAlert('필수 입력 사항을 모두 입력하세요.', 'error', 1500);
 			}
 		},
