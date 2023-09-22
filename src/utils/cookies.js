@@ -18,9 +18,9 @@ function saveRecentSearchToCookie(value) {
 	document.cookie = `recentSearch=${value}`;
 }
 
-// function saveAuthorityToCookie(value) {
-// 	document.cookie = `authority=${value}`;
-// }
+function saveAuthoritiesToCookie(value) {
+	document.cookie = `authority=${value}`;
+}
 
 function getOauthFromCookie() {
 	return document.cookie.replace(
@@ -78,12 +78,12 @@ function getIsSocialLoginFirst() {
 	);
 }
 
-// function getAuthorityFromCookie() {
-// 	return document.cookie.replace(
-// 		/(?:(?:^|.*;\s*)authority\s*=\s*([^;]*).*$)|^.*$/,
-// 		'$1',
-// 	);
-// }
+function getAuthoritiesFromCookie() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)authority\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
 
 function deleteCookie(value) {
 	document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
@@ -95,7 +95,7 @@ function clearAllCookies() {
 	//deleteCookie('userEmail');
 	deleteCookie('nickname');
 	deleteCookie('recentSearch');
-	//deleteCookie('authority');
+	deleteCookie('authority');
 }
 
 export {
@@ -104,7 +104,7 @@ export {
 	saveIdToCookie,
 	saveUserEmailToCookie,
 	saveRecentSearchToCookie,
-	//saveAuthorityToCookie,
+	saveAuthoritiesToCookie,
 	getOauthFromCookie,
 	getSocialLoginFromCookie,
 	getAuthFromCookie,
@@ -113,7 +113,7 @@ export {
 	getUserEmailFromCookie,
 	getIsSocialLoginFirst,
 	getRecentSearchFromCookie,
-	//getAuthorityFromCookie,
+	getAuthoritiesFromCookie,
 	deleteCookie,
 	clearAllCookies,
 };

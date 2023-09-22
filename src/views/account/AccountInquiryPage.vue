@@ -23,7 +23,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('userStore', ['getId', 'getAuthority']),
+		...mapGetters('userStore', ['getId', 'getAuthorities']),
 	},
 	created() {
 		this.getInquiries();
@@ -35,10 +35,9 @@ export default {
 				const params = {
 					userId: userId,
 				};
-				const response =
-					this.getAuthority == 1
-						? await getAllInquiryList()
-						: await getInquiryList(params);
+				const response = this.getAuthorities.includes('ROLE_ADMIN')
+					? await getAllInquiryList()
+					: await getInquiryList(params);
 
 				this.inquiryList = response.data;
 			} catch (error) {

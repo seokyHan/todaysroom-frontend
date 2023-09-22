@@ -25,6 +25,14 @@
 			<li class="table__item">
 				<div class="item__content">{{ inquiry.content }}</div>
 			</li>
+			<li class="table__item" v-if="inquiry.fileList">
+				<img
+					class="item__content"
+					v-for="(file, idx) in inquiry.fileList"
+					:key="idx"
+					:src="`${getImgPath}/Inquiry/${file.fileName}`"
+				/>
+			</li>
 			<li class="table-footer">
 				<RouterLink
 					:to="`/service/inquiry/${inquiry.id}`"
@@ -38,7 +46,10 @@
 				</button>
 			</li>
 		</ul>
-		<div class="inquiry-detail__comment-input" v-if="getAuthority == 1">
+		<div
+			class="inquiry-detail__comment-input"
+			v-if="getAuthorities.includes('ROLE_ADMIN')"
+		>
 			<ATextarea
 				class="comment-input__textarea"
 				v-model="commentText"
@@ -62,7 +73,7 @@
 					</div>
 					<button
 						class="comment_delete-btn"
-						v-if="getAuthority == 1"
+						v-if="getAuthorities.includes('ROLE_ADMIN')"
 						@click="removeComment(comment.id)"
 					>
 						<AIcon type="close" />
@@ -104,7 +115,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters('userStore', ['getId', 'getAuthority']),
+		...mapGetters('userStore', ['getId', 'getAuthorities', 'getImgPath']),
 	},
 	created() {
 		this.getInquiryDetail();

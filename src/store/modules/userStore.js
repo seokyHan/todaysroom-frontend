@@ -5,28 +5,32 @@ import {
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
-	//getAuthorityFromCookie,
+	getAuthoritiesFromCookie,
 	getOauthFromCookie,
 	saveAuthToCookie,
 	saveUserToCookie,
 	saveIdToCookie,
 	//saveUserEmailToCookie,
 	saveRecentSearchToCookie,
-	//saveAuthorityToCookie,
+	saveAuthoritiesToCookie,
 } from '@/utils/cookies';
 
 const userStore = {
 	namespaced: true,
 	state: {
+		imgPath: process.env.VUE_APP_IMG_DIR_PATH,
 		accessToken: getAuthFromCookie() || '',
 		id: getIdFromCookie() || '',
 		userEmail: getUserEmailFromCookie() || '',
 		nickname: getUserFromCookie() || '',
 		recentSearch: getRecentSearchFromCookie() || '',
 		likedAptCodes: [],
-		authority: '',
+		authorities: getAuthoritiesFromCookie() || [],
 	},
 	getters: {
+		getImgPath(state) {
+			return state.imgPath;
+		},
 		isLogin(state) {
 			return state.accessToken !== '';
 		},
@@ -45,8 +49,8 @@ const userStore = {
 		getRecentSearch(state) {
 			return state.recentSearch;
 		},
-		getAuthority(state) {
-			return state.authority;
+		getAuthorities(state) {
+			return state.authorities;
 		},
 	},
 	mutations: {
@@ -65,8 +69,8 @@ const userStore = {
 		SET_RECENT_SEARCH(state, recentSearch) {
 			state.recentSearch = recentSearch;
 		},
-		SET_AUTHORITY(state, authority) {
-			state.authority = authority;
+		SET_AUTHORITIES(state, authorities) {
+			state.authorities = authorities;
 		},
 		CLEAR_ALL(state) {
 			state.token = '';
@@ -81,18 +85,21 @@ const userStore = {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
 
+			console.log(data);
+
 			commit('SET_TOKEN', data.accessToken);
 			commit('SET_ID', data.id);
 			commit('SET_USEREMAIL', data.userEmail);
 			commit('SET_NICKNAME', data.nickname);
 			commit('SET_RECENT_SEARCH', data.recentSearch);
+			commit('SET_AUTHORITIES', data.authorities);
 
 			saveAuthToCookie(data.accessToken);
 			saveIdToCookie(data.id);
 			//saveUserEmailToCookie(data.userEmail);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
-			//saveAuthorityToCookie(data.authority);
+			saveAuthoritiesToCookie(data.authorities);
 		},
 		async LOGOUT({commit}, logoutUserData) {
 			await userLogOut(logoutUserData);
@@ -105,8 +112,6 @@ const userStore = {
 		},
 		async SOCIALSIGNUP({commit}) {
 			const {data} = await socialUserSignup();
-
-			console.log(data);
 
 			commit('SET_ID', data.id);
 			commit('SET_USEREMAIL', data.userEmail);
