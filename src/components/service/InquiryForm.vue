@@ -53,7 +53,9 @@
 								multiple
 							/>
 						</div>
-						<template v-if="inquiry.fileList.length > 0">
+						<template
+							v-if="inquiry.fileList.length || editInquiry.fileList.length"
+						>
 							<div
 								class="file-upload-list__item__btn-all-remove"
 								@click="deleteAllFile()"
@@ -61,28 +63,57 @@
 								전체 삭제
 							</div>
 						</template>
-						<div class="file-upload-list">
-							<div
-								class="file-upload-list__item"
-								v-for="(file, index) in inquiry.fileList"
-								:key="index"
-							>
-								<div class="file-upload-list__item__data">
-									<img
-										class="file-upload-list__item__data-thumbnail"
-										:src="file.src"
-									/>
-									<div class="file-upload-list__item__data-name">
-										{{ file.name }}
+
+						<template v-if="inquiry.fileList.length > 0">
+							<div class="file-upload-list">
+								<div
+									class="file-upload-list__item"
+									v-for="(file, index) in inquiry.fileList"
+									:key="index"
+								>
+									<div class="file-upload-list__item__data">
+										<img
+											class="file-upload-list__item__data-thumbnail"
+											:src="file.src"
+										/>
+										<div class="file-upload-list__item__data-name">
+											{{ file.name }}
+										</div>
 									</div>
+									<AIcon
+										type="close"
+										class="file-upload-list__item__btn-remove"
+										@click="deleteFile(index)"
+									/>
 								</div>
-								<AIcon
-									type="close"
-									class="file-upload-list__item__btn-remove"
-									@click="deleteFile(index)"
-								/>
 							</div>
-						</div>
+						</template>
+
+						<template v-if="editInquiry.fileList.length > 0">
+							<div class="file-upload-list">
+								<div
+									class="file-upload-list__item"
+									v-for="(file, index) in editInquiry.fileList"
+									:key="index"
+								>
+									<div class="file-upload-list__item__data">
+										<img
+											class="file-upload-list__item__data-thumbnail"
+											:src="`${getImgPath}/Inquiry/${file.fileName}`"
+										/>
+										<div class="file-upload-list__item__data-name">
+											{{ file.originalFilename }}
+										</div>
+									</div>
+									<AIcon
+										type="close"
+										class="file-upload-list__item__btn-remove"
+										@click="deleteByFileId(index)"
+									/>
+								</div>
+							</div>
+						</template>
+
 						<div class="item__uploader__desc">
 							<p>- 카메라 이미지 클릭 및 사진을 드래그 하여 업로드 해주세요.</p>
 							<p>- 사진 용량은 10MB 까지 등록이 가능합니다.</p>
@@ -132,7 +163,7 @@
 import {
 	registerInquiry,
 	getInquiryItemDetail,
-	updateInquiry,
+	//updateInquiry,
 } from '@/api/inquiry';
 import {mapGetters} from 'vuex';
 import {showAlert} from '@/utils/alertUtils';
@@ -146,12 +177,19 @@ export default {
 				content: '',
 				fileList: [],
 			},
+			editInquiry: {
+				inquiryType: '',
+				title: '',
+				content: '',
+				fileList: [],
+			},
+			deleteFileList: [],
 			onEdit: false,
 			editInquiryId: '',
 		};
 	},
 	computed: {
-		...mapGetters('userStore', ['isLogin']),
+		...mapGetters('userStore', ['isLogin', 'getImgPath']),
 	},
 	created() {
 		if (!isNaN(this.$route.params.id)) {
@@ -198,7 +236,7 @@ export default {
 			try {
 				this.editInquiryId = this.$route.params.id;
 				const {data} = await getInquiryItemDetail(this.editInquiryId);
-				this.inquiry = data;
+				this.editInquiry = data;
 			} catch (error) {
 				const errorMessage = error.data;
 
@@ -209,7 +247,7 @@ export default {
 			this.inquiry.inquiryType = '';
 			this.inquiry.title = '';
 			this.inquiry.content = '';
-			this.inquiry.file = '';
+			this.inquiry.fileList = [];
 		},
 		cancelEdit() {
 			this.$router.push('/account/inquiry-list');
@@ -222,15 +260,25 @@ export default {
 					inquiryType: this.inquiry.inquiryType,
 					title: this.inquiry.title,
 					content: this.inquiry.content,
-					file: this.inquiry.file,
 				};
 
-				await updateInquiry(updatedInquiryData);
-				this.initForm();
+				let formData = new FormData();
+				this.inquiry.fileList.forEach((file) =>
+					formData.append('fileList', file),
+				);
+				formData.append(
+					'InquiryUpdateDto',
+					new Blob([JSON.stringify(updatedInquiryData)], {
+						type: 'application/json',
+					}),
+				);
+				console.log(this.inquiry.fileList);
+				//await updateInquiry(updatedInquiryData);
+				//this.initForm();
 
-				showAlert('1대1 문의 수정 완료', 'success', 1500);
+				//showAlert('1대1 문의 수정 완료', 'success', 1500);
 
-				this.$router.push('/account/inquiry-list');
+				//this.$router.push('/account/inquiry-list');
 			} catch (error) {
 				const errorMessage = error.data;
 
@@ -248,7 +296,9 @@ export default {
 			});
 		},
 		async addFiles(files) {
-			if (this.inquiry.fileList.length >= 5) {
+			const fileLenth =
+				this.inquiry.fileList.length + this.editInquiry.fileList.length;
+			if (fileLenth >= 5) {
 				showAlert('이미지는 최대 5장까지 등록 가능합니다.', 'warning', 1500);
 				return;
 			}
@@ -261,11 +311,20 @@ export default {
 		onDragOver(e) {
 			e.preventDefault();
 		},
-		deleteFile(idx) {
-			this.inquiry.fileList.splice(idx, 1);
+		deleteFile(index) {
+			this.inquiry.fileList.splice(index, 1);
 		},
 		deleteAllFile() {
+			this.editInquiry.fileList.forEach((file, index) => {
+				this.deleteByFileId(index);
+			});
+			this.editInquiry.fileList = [];
 			this.inquiry.fileList = [];
+		},
+		deleteByFileId(index) {
+			// ToDo 삭제 버튼 누를 때마다 파일 삭제 api 요청
+			this.deleteFileList.push(this.editInquiry.fileList[index].id);
+			this.editInquiry.fileList.splice(index, 1);
 		},
 		onChangeFiles(e) {
 			const files = e.target.files;

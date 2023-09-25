@@ -85,8 +85,6 @@ const userStore = {
 		async LOGIN({commit}, loginUserData) {
 			const {data} = await userLogin(loginUserData);
 
-			console.log(data);
-
 			commit('SET_TOKEN', data.accessToken);
 			commit('SET_ID', data.id);
 			commit('SET_USEREMAIL', data.userEmail);

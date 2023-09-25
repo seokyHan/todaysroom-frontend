@@ -92,6 +92,16 @@ $orange-color: #ff9800;
 			font-weight: 300;
 			color: #656565;
 		}
+		.table__item__img{
+			display: block;
+			text-align: center;
+			padding: 30px 20px;
+			font-size: 16px;	
+			border-bottom: 2px solid rgb(238, 238, 238);
+		}
+		.item__content_img{
+			padding: 20px 10px;
+		}
 		.table-footer {
 			display: flex;
 			justify-content: flex-end;

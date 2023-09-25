@@ -25,9 +25,11 @@
 			<li class="table__item">
 				<div class="item__content">{{ inquiry.content }}</div>
 			</li>
-			<li class="table__item" v-if="inquiry.fileList">
+			<li class="table__item__img" v-if="inquiry.fileList">
 				<img
-					class="item__content"
+					class="item__content_img"
+					width="646px"
+					height="431px"
 					v-for="(file, idx) in inquiry.fileList"
 					:key="idx"
 					:src="`${getImgPath}/Inquiry/${file.fileName}`"
