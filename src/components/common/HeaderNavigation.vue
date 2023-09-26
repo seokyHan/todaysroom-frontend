@@ -145,6 +145,7 @@ export default {
 			};
 			this.$store.dispatch('userStore/LOGOUT', logoutUserData);
 			clearAllCookies();
+
 			this.$router.history.current.fullPath === '/'
 				? this.$router.go()
 				: this.$router.push('/');

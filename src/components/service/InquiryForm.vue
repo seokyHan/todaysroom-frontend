@@ -11,30 +11,64 @@
 			<ul class="inquiry-form__list">
 				<li class="inquiry-form__item">
 					<div class="item__title">문의유형</div>
-					<select
-						name="type"
-						id="inquiry-type-select"
-						v-model="inquiry.inquiryType"
-					>
-						<option value="">선택</option>
-						<option value="일반문의">일반문의</option>
-						<option value="허위매물 신고">허위매물 신고</option>
-						<option value="이벤트 문의">이벤트 문의</option>
-					</select>
+					<template v-if="!onEdit">
+						<select
+							name="type"
+							id="inquiry-type-select"
+							v-model="inquiry.inquiryType"
+						>
+							<option value="">선택</option>
+							<option value="일반문의">일반문의</option>
+							<option value="허위매물 신고">허위매물 신고</option>
+							<option value="이벤트 문의">이벤트 문의</option>
+						</select>
+					</template>
+					<template v-else>
+						<select
+							name="type"
+							id="inquiry-type-select"
+							v-model="editInquiry.inquiryType"
+						>
+							<option value="">선택</option>
+							<option value="일반문의">일반문의</option>
+							<option value="허위매물 신고">허위매물 신고</option>
+							<option value="이벤트 문의">이벤트 문의</option>
+						</select>
+					</template>
 				</li>
 				<li class="inquiry-form__item">
 					<div class="item__title">제목</div>
-					<input type="text" class="item__input" v-model="inquiry.title" />
+					<template v-if="!onEdit">
+						<input type="text" class="item__input" v-model="inquiry.title" />
+					</template>
+					<template v-else>
+						<input
+							type="text"
+							class="item__input"
+							v-model="editInquiry.title"
+						/>
+					</template>
 				</li>
 				<li class="inquiry-form__item">
 					<div class="item__title">문의내용</div>
-					<textarea
-						name="content"
-						type="content"
-						class="item__textarea"
-						placeholder="내용을 입력하세요."
-						v-model="inquiry.content"
-					></textarea>
+					<template v-if="!onEdit">
+						<textarea
+							name="content"
+							type="content"
+							class="item__textarea"
+							placeholder="내용을 입력하세요."
+							v-model="inquiry.content"
+						></textarea>
+					</template>
+					<template v-else>
+						<textarea
+							name="content"
+							type="content"
+							class="item__textarea"
+							placeholder="내용을 입력하세요."
+							v-model="editInquiry.content"
+						></textarea>
+					</template>
 				</li>
 				<li class="inquiry-form__item">
 					<div class="item__title">사진</div>
@@ -163,7 +197,7 @@
 import {
 	registerInquiry,
 	getInquiryItemDetail,
-	//updateInquiry,
+	updateInquiry,
 } from '@/api/inquiry';
 import {mapGetters} from 'vuex';
 import {showAlert} from '@/utils/alertUtils';
@@ -248,6 +282,11 @@ export default {
 			this.inquiry.title = '';
 			this.inquiry.content = '';
 			this.inquiry.fileList = [];
+
+			this.editInquiry.inquiryType = '';
+			this.editInquiry.title = '';
+			this.editInquiry.content = '';
+			this.editInquiry.fileList = [];
 		},
 		cancelEdit() {
 			this.$router.push('/account/inquiry-list');
@@ -257,9 +296,10 @@ export default {
 				const updatedInquiryData = {
 					id: this.editInquiryId,
 					userId: this.$store.getters['userStore/getId'],
-					inquiryType: this.inquiry.inquiryType,
-					title: this.inquiry.title,
-					content: this.inquiry.content,
+					inquiryType: this.editInquiry.inquiryType,
+					title: this.editInquiry.title,
+					content: this.editInquiry.content,
+					deleteFileList: this.deleteFileList,
 				};
 
 				let formData = new FormData();
@@ -267,18 +307,18 @@ export default {
 					formData.append('fileList', file),
 				);
 				formData.append(
-					'InquiryUpdateDto',
+					'inquiryUpdateDto',
 					new Blob([JSON.stringify(updatedInquiryData)], {
 						type: 'application/json',
 					}),
 				);
-				console.log(this.inquiry.fileList);
-				//await updateInquiry(updatedInquiryData);
-				//this.initForm();
 
-				//showAlert('1대1 문의 수정 완료', 'success', 1500);
+				await updateInquiry(formData);
+				this.initForm();
 
-				//this.$router.push('/account/inquiry-list');
+				showAlert('1대1 문의 수정 완료', 'success', 1500);
+
+				this.$router.push('/account/inquiry-list');
 			} catch (error) {
 				const errorMessage = error.data;
 
@@ -322,7 +362,6 @@ export default {
 			this.inquiry.fileList = [];
 		},
 		deleteByFileId(index) {
-			// ToDo 삭제 버튼 누를 때마다 파일 삭제 api 요청
 			this.deleteFileList.push(this.editInquiry.fileList[index].id);
 			this.editInquiry.fileList.splice(index, 1);
 		},

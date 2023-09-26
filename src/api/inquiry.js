@@ -19,7 +19,9 @@ function getInquiryItemDetail(inquiryId) {
 }
 
 function updateInquiry(updatedInquiryData) {
-	return instanceWithAuth.put('/inquiries/update', updatedInquiryData);
+	return instanceWithAuth.put('/inquiries/update', updatedInquiryData, {
+		isFileUploadRequest: true,
+	});
 }
 
 function deleteInquiry(inquiryId) {

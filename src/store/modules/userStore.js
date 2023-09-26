@@ -73,7 +73,7 @@ const userStore = {
 			state.authorities = authorities;
 		},
 		CLEAR_ALL(state) {
-			state.token = '';
+			state.accessToken = '';
 			state.id = '';
 			state.userEmail = '';
 			state.nickname = '';

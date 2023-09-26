@@ -157,6 +157,7 @@ export default {
 			try {
 				await deleteInquiry(this.inquiry.id);
 				this.$router.push('/account/inquiry-list');
+				showAlert('삭제 완료.', 'success', 1500);
 			} catch (error) {
 				const errorMessage = error.data;
 
