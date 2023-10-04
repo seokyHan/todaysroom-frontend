@@ -66,7 +66,7 @@
 			<ul class="comments__comment-list">
 				<li
 					class="comments__comment"
-					v-for="comment in inquiry.inquiryAnswer"
+					v-for="comment in inquiry.inquiryAnswers"
 					:key="comment.id"
 				>
 					<div class="comment__main">
@@ -145,7 +145,7 @@ export default {
 			try {
 				const inquiryId = this.$route.params.id;
 				const {data} = await getInquiryItemDetail(inquiryId);
-
+				console.log(data);
 				this.inquiry = data;
 			} catch (error) {
 				const errorMessage = error.data;

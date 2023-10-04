@@ -34,7 +34,7 @@
 					}}
 				</div>
 				<div class="item__answer">
-					{{ inquiry.complete ? '답변완료' : '답변예정' }}
+					{{ inquiry.isComplete ? '답변완료' : '답변예정' }}
 				</div>
 			</li>
 		</ul>
