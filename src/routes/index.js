@@ -43,5 +43,10 @@ export default new VueRouter({
 			path: '/account/inquiry-list/detail/:id',
 			component: () => import('@/views/account/AccountInquiryDetailPage.vue'),
 		},
+		{
+			path: '*',
+			name: 'NotFound',
+			component: () => import('@/views/NotFoundPage.vue'),
+		},
 	],
 });
