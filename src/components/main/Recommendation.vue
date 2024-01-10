@@ -6,7 +6,7 @@
 				<div class="recommendation__header">
 					<div class="header__title">
 						<h1>
-							<!-- <strong>{{ getRecentSearch }}</strong> 추천매물 -->
+							<strong>{{ getRecentSearch }}</strong> 추천매물
 							<strong>최근 검색</strong> 추천매물
 						</h1>
 						<span>최근 검색조건으로 추천된 매물입니다.</span>
@@ -70,18 +70,18 @@
 							<img :src="apt.img" :alt="apt.aptName" />
 						</div>
 						<div class="apt__apt-info">
-							<!-- <h2 class="apt-info__name">{{ apt.aptName }}</h2> -->
+							<h2 class="apt-info__name">{{ apt.aptName }}</h2>
 							<h2 class="apt-info__name">아파트 이름</h2>
-							<!-- <h1 class="apt-info__price">
+							<h1 class="apt-info__price">
 								{{ apt.recentPrice | convertAptPrice }}
-							</h1> -->
+							</h1>
 							<h1 class="apt-info__price">가격</h1>
-							<!-- <p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p> -->
+							<p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p>
 							<p class="apt-info__build-year">건축연도: 2022</p>
-							<!-- <p class="apt-info__address">
+							<p class="apt-info__address">
 								{{ apt.sidoName }} {{ apt.gugunName }} {{ apt.dongName }}
 								{{ apt.jibun }}
-							</p> -->
+							</p>
 							<p class="apt-info__address">서울특별시 영등포구 대림동 23</p>
 						</div>
 					</div>
@@ -96,120 +96,86 @@
 </template>
 
 <script>
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+import {fetchRecommendations} from '@/api/search';
+import {showAlert} from '@/utils/alertUtils';
+
 export default {
+	data() {
+		return {
+			recommendations: [],
+		};
+	},
 	computed: {
-		isLogin: function () {
-			return true;
-		},
-		loading: function () {
-			return false;
-		},
-		recommendations: function () {
-			return 10;
-		},
+		...mapState('searchStore', ['loading']),
+		...mapGetters('userStore', ['isLogin', 'getId', 'getRecentSearch']),
+	},
+	created() {
+		this.getRecommendations();
 	},
 	methods: {
+		...mapMutations('searchStore', [
+			'SELECT_ITEM',
+			'ON_LOADING',
+			'OFF_LOADING',
+		]),
+		...mapActions('searchStore', [
+			'GET_APT_LIST_BY_SEARCH',
+			'GET_APT_LIST_BY_SEARCH_WITH_AUTH',
+		]),
+		async getRecommendations() {
+			this.ON_LOADING();
+			const recentSearchData = {
+				dongName: this.getRecentSearch,
+			};
+			const {data} = await fetchRecommendations(recentSearchData);
+			this.recommendations = data;
+			this.OFF_LOADING();
+		},
+		async moveSearchPageWithData() {
+			try {
+				if (this.isLogin) {
+					const recentSearchData = {
+						userId: this.getId,
+						dongName: this.getRecentSearch,
+					};
+					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(recentSearchData);
+				} else {
+					const recentSearchData = {
+						dongName: this.getRecentSearch,
+					};
+					await this.GET_APT_LIST_BY_SEARCH(recentSearchData);
+				}
+				this.$router.push('/search');
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async linkSearchPageWithData(apt) {
+			try {
+				if (this.isLogin) {
+					const recentSearchData = {
+						userId: this.getId,
+						dongName: apt.dongName,
+					};
+					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(recentSearchData);
+				} else {
+					const recentSearchData = {
+						dongName: apt.dongName,
+					};
+					await this.GET_APT_LIST_BY_SEARCH(recentSearchData);
+				}
+				this.SELECT_ITEM(apt);
+				this.$router.push('/search');
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
 		moveSearchPage() {
 			this.$router.push('/search');
 		},
-		moveSearchPageWithData() {
-			alert('hi');
-		},
 	},
 };
-// import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
-// import {fetchRecommendations} from '@/api/search';
-// import Swal from 'sweetalert2';
-// export default {
-// 	data() {
-// 		return {
-// 			recommendations: [],
-// 		};
-// 	},
-// 	computed: {
-// 		...mapState('searchStore', ['loading']),
-// 		...mapGetters('userStore', ['isLogin', 'getId', 'getRecentSearch']),
-// 	},
-// 	created() {
-// 		this.getRecommendations();
-// 	},
-// 	methods: {
-// 		...mapMutations('searchStore', [
-// 			'SELECT_ITEM',
-// 			'ON_LOADING',
-// 			'OFF_LOADING',
-// 		]),
-// 		...mapActions('searchStore', [
-// 			'GET_APT_LIST_BY_SEARCH',
-// 			'GET_APT_LIST_BY_SEARCH_WITH_AUTH',
-// 		]),
-// 		async getRecommendations() {
-// 			this.ON_LOADING();
-// 			const recentSearchData = {
-// 				dongName: this.getRecentSearch,
-// 			};
-// 			const {data} = await fetchRecommendations(recentSearchData);
-// 			this.recommendations = data;
-// 			this.OFF_LOADING();
-// 		},
-// 		async moveSearchPageWithData() {
-// 			try {
-// 				if (this.isLogin) {
-// 					const recentSearchData = {
-// 						userId: this.getId,
-// 						dongName: this.getRecentSearch,
-// 					};
-// 					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(recentSearchData);
-// 				} else {
-// 					const recentSearchData = {
-// 						dongName: this.getRecentSearch,
-// 					};
-// 					await this.GET_APT_LIST_BY_SEARCH(recentSearchData);
-// 				}
-// 				this.$router.push('/search');
-// 			} catch (error) {
-// 				Swal.fire({
-// 					position: 'center',
-// 					icon: 'error',
-// 					width: 350,
-// 					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${error}<div>`,
-// 					showConfirmButton: false,
-// 					timer: 1500,
-// 				});
-// 			}
-// 		},
-// 		async linkSearchPageWithData(apt) {
-// 			try {
-// 				if (this.isLogin) {
-// 					const recentSearchData = {
-// 						userId: this.getId,
-// 						dongName: apt.dongName,
-// 					};
-// 					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(recentSearchData);
-// 				} else {
-// 					const recentSearchData = {
-// 						dongName: apt.dongName,
-// 					};
-// 					await this.GET_APT_LIST_BY_SEARCH(recentSearchData);
-// 				}
-// 				this.SELECT_ITEM(apt);
-// 				this.$router.push('/search');
-// 			} catch (error) {
-// 				Swal.fire({
-// 					position: 'center',
-// 					icon: 'error',
-// 					width: 350,
-// 					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${error}<div>`,
-// 					showConfirmButton: false,
-// 					timer: 1500,
-// 				});
-// 			}
-// 		},
-// 		moveSearchPage() {
-// 			this.$router.push('/search');
-// 		},
-// 	},
-// };
 </script>
 
 <style lang="scss" scoped>
