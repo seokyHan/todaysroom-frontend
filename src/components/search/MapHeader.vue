@@ -71,7 +71,196 @@
 </template>
 
 <script>
-export default {};
+import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
+import {putRecentSearch} from '@/api/user';
+import EventBus from '@/utils/eventBus';
+import {showAlert} from '@/utils/alertUtils';
+
+export default {
+	data() {
+		return {
+			searchDong: this.searchDong,
+			selectedSidoCode: '시를 선택하세요',
+			selectedGugunCode: '구를 선택하세요',
+			selectedDongCode: '동을 선택하세요',
+		};
+	},
+	created() {
+		this.getSidoList();
+	},
+	computed: {
+		...mapState('searchStore', [
+			'searchDongName',
+			'sidoList',
+			'gugunList',
+			'dongList',
+		]),
+		...mapGetters('userStore', ['isLogin', 'getId']),
+	},
+	methods: {
+		...mapMutations('userStore', ['SET_RECENT_SEARCH']),
+		...mapMutations('searchStore', [
+			'CLEAR_SIDO_LIST',
+			'CLEAR_GUGUN_LIST',
+			'CLEAR_DONG_LIST',
+			'CLEAR_APT_LIST',
+			'BACK_TO_ITEM_LIST',
+			'OFF_ROAD_VIEW',
+		]),
+		...mapActions('searchStore', [
+			'GET_SIDO_LIST',
+			'GET_GUGUN_LIST',
+			'GET_DONG_LIST',
+			'GET_APT_LIST_BY_GUGUN',
+			'GET_APT_LIST_BY_DONG',
+			'GET_APT_LIST_BY_SEARCH',
+			'GET_APT_LIST_BY_GUGUN_WITH_AUTH',
+			'GET_APT_LIST_BY_DONG_WITH_AUTH',
+			'GET_APT_LIST_BY_SEARCH_WITH_AUTH',
+		]),
+		async getSidoList() {
+			try {
+				await this.GET_SIDO_LIST();
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async getGugunList(sidoCode) {
+			const sidoData = {
+				sido: sidoCode,
+			};
+
+			try {
+				await this.GET_GUGUN_LIST(sidoData);
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async getDongList(gugunCode) {
+			const gugunData = {
+				gugun: gugunCode,
+			};
+
+			try {
+				await this.GET_DONG_LIST(gugunData);
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async getAptListByGugun(gugunCode) {
+			try {
+				if (this.isLogin) {
+					const gugunData = {
+						userId: this.getId,
+						gugun: gugunCode,
+					};
+					await this.GET_APT_LIST_BY_GUGUN_WITH_AUTH(gugunData);
+				} else {
+					const gugunData = {
+						gugun: gugunCode,
+					};
+
+					await this.GET_APT_LIST_BY_GUGUN(gugunData);
+				}
+
+				this.BACK_TO_ITEM_LIST();
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async getAptListByDong(dongCode) {
+			try {
+				if (this.isLogin) {
+					const dongData = {
+						userId: this.getId,
+						dong: dongCode,
+					};
+
+					await this.GET_APT_LIST_BY_DONG_WITH_AUTH(dongData);
+				} else {
+					const dongData = {
+						dong: dongCode,
+					};
+
+					await this.GET_APT_LIST_BY_DONG(dongData);
+				}
+
+				this.BACK_TO_ITEM_LIST();
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async searchAptListByDong() {
+			try {
+				if (this.isLogin) {
+					const searchData = {
+						userId: this.getId,
+						dongName: this.searchDong,
+					};
+
+					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(searchData);
+				} else {
+					const searchData = {
+						dongName: this.searchDong,
+					};
+
+					await this.GET_APT_LIST_BY_SEARCH(searchData);
+				}
+
+				this.CLEAR_GUGUN_LIST();
+				this.CLEAR_DONG_LIST();
+				this.selectedSidoCode = '시를 선택하세요';
+				this.selectedGugunCode = '구를 선택하세요';
+				this.selectedDongCode = '동을 선택하세요';
+				EventBus.$emit('displayKakaoMapMarker');
+				this.BACK_TO_ITEM_LIST();
+
+				if (this.isLogin) {
+					const recentSearchData = {
+						id: this.getId,
+						recentSearch: this.searchDongName,
+					};
+
+					putRecentSearch(recentSearchData);
+					this.SET_RECENT_SEARCH(this.searchDongName);
+				}
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		selectSido() {
+			this.CLEAR_GUGUN_LIST();
+			this.CLEAR_DONG_LIST();
+			this.selectedGugunCode = '구를 선택하세요';
+			this.selectedDongCode = '동을 선택하세요';
+
+			if (!isNaN(this.selectedSidoCode)) {
+				this.getGugunList(this.selectedSidoCode);
+			}
+		},
+		async selectGugun() {
+			this.CLEAR_DONG_LIST();
+			this.selectedDongCode = '동을 선택하세요';
+
+			if (!isNaN(this.selectedGugunCode)) {
+				this.getDongList(this.selectedGugunCode);
+				await this.getAptListByGugun(this.selectedGugunCode);
+			}
+		},
+		async selectDong() {
+			if (!isNaN(this.selectedDongCode)) {
+				await this.getAptListByDong(this.selectedDongCode);
+				EventBus.$emit('displayKakaoMapMarker');
+			}
+		},
+		clearSearch() {
+			this.CLEAR_APT_LIST();
+			this.selectedSidoCode = '시를 선택하세요';
+			this.selectedGugunCode = '구를 선택하세요';
+			this.selectedDongCode = '동을 선택하세요';
+		},
+	},
+};
 </script>
 
 <style lang="scss" scoped>
