@@ -84,7 +84,75 @@
 </template>
 
 <script>
-export default {};
+import {mapState, mapGetters, mapMutations} from 'vuex';
+import KakaoMap from '@/components/search/KakaoMap.vue';
+import Advertisement from '@/components/search/Advertisement.vue';
+import AptItem from '@/components/search/AptItem.vue';
+
+export default {
+	components: {
+		KakaoMap,
+		Advertisement,
+		AptItem,
+	},
+	data() {
+		return {
+			filled: false,
+			likedStatus: [],
+			status: {
+				aptStatus: false,
+			},
+		};
+	},
+	computed: {
+		...mapState('searchStore', ['isSelected', 'roadViewStatus', 'loading']),
+		...mapGetters('searchStore', [
+			'getAptList',
+			'getLowestPrice',
+			'getHighestPrice',
+			'getSelectedItem',
+			'getAppKey',
+		]),
+		...mapGetters('userStore', ['getId']),
+	},
+	methods: {
+		...mapMutations('searchStore', [
+			'SELECT_ITEM',
+			'BACK_TO_ITEM_LIST',
+			'ON_ROAD_VIEW',
+			'OFF_ROAD_VIEW',
+		]),
+		initKakaoRoadview(latitude, longitude) {
+			const roadviewContainer = document.getElementById('roadview');
+			const roadview = new kakao.maps.Roadview(roadviewContainer);
+			const roadviewClient = new kakao.maps.RoadviewClient();
+			const position = new kakao.maps.LatLng(latitude, longitude);
+
+			roadviewClient.getNearestPanoId(position, 50, function (panoId) {
+				roadview.setPanoId(panoId, position);
+			});
+		},
+		OnRoadView(latitude, longitude) {
+			if (window.kakao && window.kakao.maps) {
+				this.initKakaoRoadview(latitude, longitude);
+			} else {
+				const script = document.createElement('script');
+
+				/* global kakao */
+				script.onload = () => kakao.maps.load(this.initKakaoRoadview);
+				script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${this.getAppKey}`;
+				document.head.appendChild(script);
+			}
+
+			this.ON_ROAD_VIEW();
+		},
+		OffRoadView() {
+			this.OFF_ROAD_VIEW();
+		},
+	},
+};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+@import './scss/mapMain.scss';
+</style>
