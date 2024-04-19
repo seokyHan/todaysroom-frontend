@@ -11,7 +11,7 @@ import {
 } from '@/api/search';
 
 const searchStore = {
-	namespace: true,
+	namespaced: true,
 	// state
 	state: {
 		appKey: process.env.VUE_APP_KAKAO_APP_KEY,
@@ -141,7 +141,7 @@ const searchStore = {
 	// actions
 	actions: {
 		async GET_SIDO_LIST({commit}) {
-			const {data} = await fetchSidoList;
+			const {data} = await fetchSidoList();
 			commit('SET_SIDO_LIST', data);
 		},
 		async GET_GUGUN_LIST({commit}, sidoData) {
