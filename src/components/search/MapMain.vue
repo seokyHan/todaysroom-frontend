@@ -71,7 +71,7 @@
 							</p>
 						</div>
 						<div class="detail__ad">
-							<Advertisement />
+							<MainAdvertisement />
 						</div>
 					</div>
 				</template>
@@ -86,13 +86,13 @@
 <script>
 import {mapState, mapGetters, mapMutations} from 'vuex';
 import KakaoMap from '@/components/search/KakaoMap.vue';
-import Advertisement from '@/components/search/Advertisement.vue';
+import MainAdvertisement from '@/components/search/MainAdvertisement.vue';
 import AptItem from '@/components/search/AptItem.vue';
 
 export default {
 	components: {
 		KakaoMap,
-		Advertisement,
+		MainAdvertisement,
 		AptItem,
 	},
 	data() {
