@@ -44,6 +44,10 @@ export default new VueRouter({
 			component: () => import('@/views/account/AccountInquiryDetailPage.vue'),
 		},
 		{
+			path: '/search',
+			component: () => import('@/views/SearchPage.vue'),
+		},
+		{
 			path: '*',
 			name: 'NotFound',
 			component: () => import('@/views/NotFoundPage.vue'),
