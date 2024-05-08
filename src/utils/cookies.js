@@ -15,7 +15,7 @@ function saveUserEmailToCookie(value) {
 }
 
 function saveRecentSearchToCookie(value) {
-	document.cookie = `recentSearch=${value}`;
+	document.cookie = `recentSearch=${encodeURI(value)}`;
 }
 
 function saveAuthoritiesToCookie(value) {
