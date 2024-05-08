@@ -5,7 +5,7 @@ export function showAlert(title, icon, timer) {
 		position: 'center',
 		icon: icon,
 		width: 350,
-		title: `<div style="font-size: 18px; font-family: 'Spoqa Han Sans Neo', sans-serif;">${title}</div>`,
+		title: `<div style="font-size: 18px; font-family: 'Noto Sans KR', sans-serif;">${title}</div>`,
 		showConfirmButton: false,
 		timer: timer,
 	});
