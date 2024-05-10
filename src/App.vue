@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 @import './scss/antDesign.scss';
 @import './scss/reset.scss';
 @import './scss/common.scss';
