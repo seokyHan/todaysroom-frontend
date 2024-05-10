@@ -4,7 +4,7 @@ import {saveAuthToCookie} from '@/utils/cookies';
 
 export function setInterceptors(instance) {
 	instance.interceptors.request.use(
-		function (config) {
+		(config) => {
 			const token = store.getters['userStore/getToken'];
 			if (token) {
 				config.headers.Authorization =
@@ -26,7 +26,7 @@ export function setInterceptors(instance) {
 		async (error) => {
 			const errorCode = error.response.data.code;
 
-			if (errorCode === 'TOKEN-0001') {
+			if (errorCode === 'I-AUT-0002') {
 				await reissue()
 					.then((result) => {
 						// 토큰 재발급 후 저장
