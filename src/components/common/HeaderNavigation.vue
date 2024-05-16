@@ -29,7 +29,7 @@
 								style="
 									width: 200px;
 									font-size: 16px;
-									font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+									font-family: 'Noto Sans KR', 'sans-serif';
 								"
 							>
 								내 정보
@@ -44,7 +44,7 @@
 								style="
 									width: 200px;
 									font-size: 16px;
-									font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+									font-family: 'Noto Sans KR', 'sans-serif';
 								"
 							>
 								1:1 문의 내역
@@ -67,7 +67,7 @@
 									font-size: 16px;
 									text-align: left;
 									cursor: pointer;
-									font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+									font-family: 'Noto Sans KR', 'sans-serif';
 								"
 							>
 								로그아웃
@@ -126,7 +126,7 @@ export default {
 			const headerNavigation = this;
 			this.$confirm({
 				title: () => (
-					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Spoqa Han Sans Neo', 'sans-serif'; color: #000;">
+					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Noto Sans KR', 'sans-serif'; color: #000;">
 						로그아웃 하시겠습니까?
 					</h1>
 				),
@@ -146,9 +146,7 @@ export default {
 			this.$store.dispatch('userStore/LOGOUT', logoutUserData);
 			clearAllCookies();
 
-			this.$router.history.current.fullPath === '/'
-				? this.$router.go()
-				: this.$router.push('/');
+			this.$router.push('/').catch(() => {});
 		},
 	},
 };
