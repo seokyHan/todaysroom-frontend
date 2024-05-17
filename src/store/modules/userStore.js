@@ -1,13 +1,11 @@
-import {userLogOut, userLogin, userTest, socialUserSignup} from '@/api/auth';
+import {userLogOut, userLogin, socialUserSignup} from '@/api/auth';
 import {
-	getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	getAuthoritiesFromCookie,
 	getOauthFromCookie,
-	saveAuthToCookie,
 	saveUserToCookie,
 	saveIdToCookie,
 	//saveUserEmailToCookie,
@@ -19,7 +17,7 @@ const userStore = {
 	namespaced: true,
 	state: {
 		imgPath: process.env.VUE_APP_IMG_DIR_PATH,
-		accessToken: getAuthFromCookie() || '',
+		accessToken: '',
 		id: getIdFromCookie() || '',
 		userEmail: getUserEmailFromCookie() || '',
 		nickname: getUserFromCookie() || '',
@@ -92,9 +90,7 @@ const userStore = {
 			commit('SET_RECENT_SEARCH', data.recentSearch);
 			commit('SET_AUTHORITIES', data.authorities);
 
-			saveAuthToCookie(data.accessToken);
 			saveIdToCookie(data.id);
-			//saveUserEmailToCookie(data.userEmail);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			saveAuthoritiesToCookie(data.authorities);
@@ -103,10 +99,6 @@ const userStore = {
 			await userLogOut(logoutUserData);
 
 			commit('CLEAR_ALL');
-		},
-		async TEST() {
-			const t = await userTest();
-			console.log(t);
 		},
 		async SOCIALSIGNUP({commit}) {
 			const {data} = await socialUserSignup();
