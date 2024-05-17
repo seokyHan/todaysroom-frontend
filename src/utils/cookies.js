@@ -36,12 +36,12 @@ function getSocialLoginFromCookie() {
 	);
 }
 
-function getAuthFromCookie() {
-	return document.cookie.replace(
-		/(?:(?:^|.*;\s*)auth\s*=\s*([^;]*).*$)|^.*$/,
-		'$1',
-	);
-}
+// function getAuthFromCookie() {
+// 	return document.cookie.replace(
+// 		/(?:(?:^|.*;\s*)auth\s*=\s*([^;]*).*$)|^.*$/,
+// 		'$1',
+// 	);
+// }
 
 function getUserFromCookie() {
 	return document.cookie.replace(
@@ -58,9 +58,11 @@ function getIdFromCookie() {
 }
 
 function getRecentSearchFromCookie() {
-	return document.cookie.replace(
-		/(?:(?:^|.*;\s*)recentSearch\s*=\s*([^;]*).*$)|^.*$/,
-		'$1',
+	return decodeURIComponent(
+		document.cookie.replace(
+			/(?:(?:^|.*;\s*)recentSearch\s*=\s*([^;]*).*$)|^.*$/,
+			'$1',
+		),
 	);
 }
 
@@ -107,7 +109,7 @@ export {
 	saveAuthoritiesToCookie,
 	getOauthFromCookie,
 	getSocialLoginFromCookie,
-	getAuthFromCookie,
+	// getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
