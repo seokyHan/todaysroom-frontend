@@ -1,15 +1,14 @@
 import store from '@/store/index';
 import {reissue} from '../auth';
-import {saveAuthToCookie} from '@/utils/cookies';
 
 export function setInterceptors(instance) {
 	instance.interceptors.request.use(
-		(config) => {
-			const token = store.getters['userStore/getToken'];
-			if (token) {
-				config.headers.Authorization =
-					process.env.VUE_APP_API_TOKEN_PREFIX + ' ' + token;
+		async (config) => {
+			if (!store.getters['userStore/getToken']) {
+				const {data} = await reissue();
+				store.commit('userStore/SET_TOKEN', data.accessToken);
 			}
+			config.headers.Authorization = `${process.env.VUE_APP_API_TOKEN_PREFIX} ${store.getters['userStore/getToken']}`;
 
 			if (config.isFileUploadRequest) {
 				config.headers['Content-Type'] = 'multipart/form-data';
@@ -22,22 +21,17 @@ export function setInterceptors(instance) {
 	);
 
 	instance.interceptors.response.use(
-		(success) => success,
+		(success) => {
+			return success;
+		},
 		async (error) => {
 			const errorCode = error.response.data.code;
-
 			if (errorCode === 'I-AUT-0002') {
-				await reissue()
-					.then((result) => {
-						// 토큰 재발급 후 저장
-						store.commit('userStore/SET_TOKEN', result.data.accessToken);
-						saveAuthToCookie(result.data.accessToken);
-					})
-					.catch((error) => {
-						// 에러났을 경우
-						console.log(error);
-					});
-				return Promise.reject(error);
+				const {data} = await reissue();
+				store.commit('userStore/SET_TOKEN', data.accessToken);
+				error.config.headers.Authorization = `${process.env.VUE_APP_API_TOKEN_PREFIX} ${store.getters['userStore/getToken']}`;
+
+				return instance(error.config);
 			}
 			return Promise.reject(error);
 		},
