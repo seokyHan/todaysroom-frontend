@@ -128,7 +128,7 @@ export default {
 
 			this.$confirm({
 				title: () => (
-					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Spoqa Han Sans Neo', 'sans-serif'; color: #000;">
+					<h1 style="font-size: 18px; font-weight: 200; font-family: 'Noto Sans KR', 'sans-serif'; color: #000;">
 						정말 삭제하시겠습니까?
 					</h1>
 				),
@@ -145,7 +145,6 @@ export default {
 			try {
 				const inquiryId = this.$route.params.id;
 				const {data} = await getInquiryItemDetail(inquiryId);
-				console.log(data);
 				this.inquiry = data;
 			} catch (error) {
 				const errorMessage = error.data;
