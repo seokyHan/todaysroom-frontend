@@ -1,5 +1,4 @@
-import {instance} from '@/api/index';
-import {instanceWithAuth} from '@/api/index';
+import {instance, instanceWithAuth} from '@/api/index';
 
 function fetchSidoList() {
 	return instance.get('/map/sido');
