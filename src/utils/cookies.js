@@ -22,6 +22,10 @@ function saveAuthoritiesToCookie(value) {
 	document.cookie = `authority=${value}`;
 }
 
+function saveisLogin(value) {
+	localStorage.setItem('isLogin', value);
+}
+
 function getOauthFromCookie() {
 	return document.cookie.replace(
 		/(?:(?:^|.*;\s*)oauth2\s*=\s*([^;]*).*$)|^.*$/,
@@ -35,13 +39,6 @@ function getSocialLoginFromCookie() {
 		'$1',
 	);
 }
-
-// function getAuthFromCookie() {
-// 	return document.cookie.replace(
-// 		/(?:(?:^|.*;\s*)auth\s*=\s*([^;]*).*$)|^.*$/,
-// 		'$1',
-// 	);
-// }
 
 function getUserFromCookie() {
 	return document.cookie.replace(
@@ -87,6 +84,14 @@ function getAuthoritiesFromCookie() {
 	);
 }
 
+function getIsLogin() {
+	return JSON.parse(localStorage.getItem('isLogin'));
+}
+
+function deleteIsLogin() {
+	localStorage.removeItem('isLogin');
+}
+
 function deleteCookie(value) {
 	document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
@@ -107,15 +112,17 @@ export {
 	saveUserEmailToCookie,
 	saveRecentSearchToCookie,
 	saveAuthoritiesToCookie,
+	saveisLogin,
 	getOauthFromCookie,
 	getSocialLoginFromCookie,
-	// getAuthFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getIsSocialLoginFirst,
 	getRecentSearchFromCookie,
 	getAuthoritiesFromCookie,
+	getIsLogin,
+	deleteIsLogin,
 	deleteCookie,
 	clearAllCookies,
 };

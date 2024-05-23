@@ -6,9 +6,10 @@ import {
 	getRecentSearchFromCookie,
 	getAuthoritiesFromCookie,
 	getOauthFromCookie,
+	getIsLogin,
 	saveUserToCookie,
 	saveIdToCookie,
-	//saveUserEmailToCookie,
+	saveisLogin,
 	saveRecentSearchToCookie,
 	saveAuthoritiesToCookie,
 } from '@/utils/cookies';
@@ -29,8 +30,8 @@ const userStore = {
 		getImgPath(state) {
 			return state.imgPath;
 		},
-		isLogin(state) {
-			return state.accessToken !== '';
+		isLogin() {
+			return getIsLogin() !== '';
 		},
 		isOauth() {
 			return getOauthFromCookie() !== '';
@@ -94,6 +95,7 @@ const userStore = {
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			saveAuthoritiesToCookie(data.authorities);
+			saveisLogin();
 		},
 		async LOGOUT({commit}, logoutUserData) {
 			await userLogOut(logoutUserData);
