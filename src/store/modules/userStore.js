@@ -25,13 +25,14 @@ const userStore = {
 		recentSearch: getRecentSearchFromCookie() || '',
 		likedAptCodes: [],
 		authorities: getAuthoritiesFromCookie() || [],
+		isLoginUser: getIsLogin() !== null,
 	},
 	getters: {
 		getImgPath(state) {
 			return state.imgPath;
 		},
-		isLogin() {
-			return getIsLogin() !== '';
+		isLogin(state) {
+			return state.isLoginUser;
 		},
 		isOauth() {
 			return getOauthFromCookie() !== '';
@@ -71,6 +72,9 @@ const userStore = {
 		SET_AUTHORITIES(state, authorities) {
 			state.authorities = authorities;
 		},
+		SET_ISLOGAINUSER(state, loginUser) {
+			state.isLoginUser = loginUser;
+		},
 		CLEAR_ALL(state) {
 			state.accessToken = '';
 			state.id = '';
@@ -78,6 +82,7 @@ const userStore = {
 			state.nickname = '';
 			state.recentSearch = '';
 			state.likedAptCodes = [];
+			state.isLoginUser = null;
 		},
 	},
 	actions: {
@@ -90,12 +95,13 @@ const userStore = {
 			commit('SET_NICKNAME', data.nickname);
 			commit('SET_RECENT_SEARCH', data.recentSearch);
 			commit('SET_AUTHORITIES', data.authorities);
+			commit('SET_ISLOGAINUSER', data.userEmail);
 
 			saveIdToCookie(data.id);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);
 			saveAuthoritiesToCookie(data.authorities);
-			saveisLogin();
+			saveisLogin(data.userEmail);
 		},
 		async LOGOUT({commit}, logoutUserData) {
 			await userLogOut(logoutUserData);

@@ -78,7 +78,6 @@ export default {
 					? saveUserEmailToCookie(this.userEmail)
 					: deleteCookie('userEmail');
 				await this.$store.dispatch('userStore/LOGIN', loginUserData);
-				showAlert('로그인 성공.', 'success', 1500);
 				this.$router.push('/');
 			} catch (error) {
 				showAlert('아이디 또는 비밀번호가 일치하지 않습니다.', 'warning', 1500);

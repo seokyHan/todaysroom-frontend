@@ -87,12 +87,12 @@ import {showAlert} from '@/utils/alertUtils';
 import {
 	getIsSocialLoginFirst,
 	getSocialLoginFromCookie,
-	getAuthFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	getUserFromCookie,
 	deleteCookie,
+	deleteIsLogin,
 	clearAllCookies,
 } from '@/utils/cookies';
 export default {
@@ -104,7 +104,6 @@ export default {
 		}
 
 		if (getSocialLoginFromCookie() === 'success') {
-			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 			this.$store.commit('userStore/SET_ID', getIdFromCookie());
 			this.$store.commit(
 				'userStore/SET_NICKNAME',
@@ -119,7 +118,7 @@ export default {
 		deleteCookie('socialLogin');
 	},
 	computed: {
-		...mapGetters('userStore', ['getNickname', 'isLogin', 'getId']),
+		...mapGetters('userStore', ['getToken', 'getNickname', 'isLogin', 'getId']),
 	},
 	methods: {
 		showConfirm() {
@@ -141,10 +140,11 @@ export default {
 		},
 		userLogout() {
 			const logoutUserData = {
-				accessToken: getAuthFromCookie() || '',
+				accessToken: this.getToken,
 			};
 			this.$store.dispatch('userStore/LOGOUT', logoutUserData);
 			clearAllCookies();
+			deleteIsLogin();
 
 			this.$router.push('/').catch(() => {});
 		},

@@ -85,7 +85,7 @@ function getAuthoritiesFromCookie() {
 }
 
 function getIsLogin() {
-	return JSON.parse(localStorage.getItem('isLogin'));
+	return localStorage.getItem('isLogin');
 }
 
 function deleteIsLogin() {
