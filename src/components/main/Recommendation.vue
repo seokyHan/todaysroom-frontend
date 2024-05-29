@@ -67,22 +67,17 @@
 						@click="linkSearchPageWithData(apt)"
 					>
 						<div class="apt__images">
-							<img :src="apt.img" :alt="apt.aptName" />
+							<img :src="apt.image" :alt="apt.aptName" />
 						</div>
 						<div class="apt__apt-info">
 							<h2 class="apt-info__name">{{ apt.aptName }}</h2>
-							<h2 class="apt-info__name">아파트 이름</h2>
 							<h1 class="apt-info__price">
-								{{ apt.recentPrice | convertAptPrice }}
+								{{ apt.amount }}
 							</h1>
-							<h1 class="apt-info__price">가격</h1>
 							<p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p>
-							<p class="apt-info__build-year">건축연도: 2022</p>
 							<p class="apt-info__address">
-								{{ apt.sidoName }} {{ apt.gugunName }} {{ apt.dongName }}
-								{{ apt.jibun }}
+								{{ apt.locationOfAgency }} {{ apt.roadName }}
 							</p>
-							<p class="apt-info__address">서울특별시 영등포구 대림동 23</p>
 						</div>
 					</div>
 				</div>
@@ -97,7 +92,7 @@
 
 <script>
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
-import {fetchRecommendations} from '@/api/search';
+import {fetchRecommendations, fetchRecommendationsByDong} from '@/api/search';
 import {showAlert} from '@/utils/alertUtils';
 
 export default {
@@ -128,7 +123,11 @@ export default {
 			const recentSearchData = {
 				dongName: this.getRecentSearch,
 			};
-			const {data} = await fetchRecommendations(recentSearchData);
+
+			const {data} =
+				recentSearchData.dongName === ''
+					? await fetchRecommendations(recentSearchData)
+					: await fetchRecommendationsByDong(recentSearchData);
 			this.recommendations = data;
 			this.OFF_LOADING();
 		},
