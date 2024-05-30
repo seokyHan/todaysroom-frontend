@@ -67,7 +67,7 @@
 						@click="linkSearchPageWithData(apt)"
 					>
 						<div class="apt__images">
-							<img :src="apt.image" :alt="apt.aptName" />
+							<img :src="`${getImgPath}${apt.image}`" :alt="apt.aptName" />
 						</div>
 						<div class="apt__apt-info">
 							<h2 class="apt-info__name">{{ apt.aptName }}</h2>
@@ -103,7 +103,12 @@ export default {
 	},
 	computed: {
 		...mapState('searchStore', ['loading']),
-		...mapGetters('userStore', ['isLogin', 'getId', 'getRecentSearch']),
+		...mapGetters('userStore', [
+			'isLogin',
+			'getId',
+			'getRecentSearch',
+			'getImgPath',
+		]),
 	},
 	created() {
 		this.getRecommendations();
