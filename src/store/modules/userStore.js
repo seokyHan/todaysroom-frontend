@@ -116,6 +116,7 @@ const userStore = {
 			commit('SET_NICKNAME', data.nickname);
 			commit('SET_RECENT_SEARCH', data.recentSearch);
 
+			saveisLogin(data.userEmail);
 			saveIdToCookie(data.id);
 			saveUserToCookie(data.nickname);
 			saveRecentSearchToCookie(data.recentSearch);

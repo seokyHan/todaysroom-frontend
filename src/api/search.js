@@ -37,6 +37,10 @@ function fetchAptListBySearchWithAuth(searchDate) {
 }
 
 function fetchRecommendations(recentSearchData) {
+	return instance.get('/map/recommend', {params: recentSearchData});
+}
+
+function fetchRecommendationsByDong(recentSearchData) {
 	return instanceWithAuth.get('/map/recommend', {params: recentSearchData});
 }
 
@@ -51,4 +55,5 @@ export {
 	fetchAptListByDongWithAuth,
 	fetchAptListBySearchWithAuth,
 	fetchRecommendations,
+	fetchRecommendationsByDong,
 };
