@@ -91,6 +91,8 @@ import {
 	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
 	getUserFromCookie,
+	getAuthFromCookie,
+	saveisLogin,
 	deleteCookie,
 	deleteIsLogin,
 	clearAllCookies,
@@ -99,11 +101,14 @@ export default {
 	created() {
 		if (getIsSocialLoginFirst()) {
 			showAlert('회원가입이 완료되었습니다.', 'success', 1500);
+			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 			this.$store.dispatch('userStore/SOCIALSIGNUP');
 			deleteCookie('isFirst');
+			deleteCookie('auth');
 		}
 
 		if (getSocialLoginFromCookie() === 'success') {
+			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 			this.$store.commit('userStore/SET_ID', getIdFromCookie());
 			this.$store.commit(
 				'userStore/SET_NICKNAME',
@@ -114,7 +119,9 @@ export default {
 				'userStore/SET_RECENT_SEARCH',
 				getRecentSearchFromCookie(),
 			);
+			saveisLogin(getUserEmailFromCookie());
 		}
+		deleteCookie('auth');
 		deleteCookie('socialLogin');
 	},
 	computed: {
@@ -139,10 +146,7 @@ export default {
 			});
 		},
 		userLogout() {
-			const logoutUserData = {
-				accessToken: this.getToken,
-			};
-			this.$store.dispatch('userStore/LOGOUT', logoutUserData);
+			this.$store.dispatch('userStore/LOGOUT');
 			clearAllCookies();
 			deleteIsLogin();
 

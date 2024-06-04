@@ -88,6 +88,13 @@ function getIsLogin() {
 	return localStorage.getItem('isLogin');
 }
 
+function getAuthFromCookie() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)auth\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
 function deleteIsLogin() {
 	localStorage.removeItem('isLogin');
 }
@@ -122,6 +129,7 @@ export {
 	getRecentSearchFromCookie,
 	getAuthoritiesFromCookie,
 	getIsLogin,
+	getAuthFromCookie,
 	deleteIsLogin,
 	deleteCookie,
 	clearAllCookies,
