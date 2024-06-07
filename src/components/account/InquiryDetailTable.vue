@@ -32,7 +32,7 @@
 					height="431px"
 					v-for="(file, idx) in inquiry.fileList"
 					:key="idx"
-					:src="`${getImgPath}/Inquiry/${file.fileName}`"
+					:src="`${getImgPath}/upload-dir/Inquiry/${file.fileName}`"
 				/>
 			</li>
 			<li class="table-footer">

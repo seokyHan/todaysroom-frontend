@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import {fetchNewsList} from '@/api/news';
+import {showAlert} from '@/utils/alertUtils';
 export default {
 	data() {
 		return {
@@ -62,44 +64,16 @@ export default {
 		this.initNewsList();
 	},
 	methods: {
-		initNewsList() {
-			this.newsList = [
-				{newsTitle: 'test1'},
-				{newsTitle: 'test2'},
-				{newsTitle: 'test3'},
-			];
+		async initNewsList() {
+			try {
+				const {data} = await fetchNewsList();
+				this.newsList = data.splice(0, 5);
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
 		},
 	},
 };
-// import {fetchNewsList} from '@/api/news';
-// import Swal from 'sweetalert2';
-// export default {
-// 	data() {
-// 		return {
-// 			newsList: [],
-// 		};
-// 	},
-// 	created() {
-// 		this.initNewsList();
-// 	},
-// 	methods: {
-// 		async initNewsList() {
-// 			try {
-// 				const {data} = await fetchNewsList();
-// 				this.newsList = data.splice(0, 5);
-// 			} catch (error) {
-// 				Swal.fire({
-// 					position: 'center',
-// 					icon: 'error',
-// 					width: 350,
-// 					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${error}<div>`,
-// 					showConfirmButton: false,
-// 					timer: 1500,
-// 				});
-// 			}
-// 		},
-// 	},
-// };
 </script>
 
 <style lang="scss" scoped>

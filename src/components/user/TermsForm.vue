@@ -74,8 +74,6 @@
 </template>
 
 <script>
-import {getOauthFromCookie, getAuthFromCookie} from '@/utils/cookies';
-
 export default {
 	data() {
 		return {
@@ -83,15 +81,7 @@ export default {
 			ageTermStatus: false,
 			serviceTermStatus: false,
 			infoTermStatus: false,
-			oauthStatus: false,
 		};
-	},
-	created() {
-		if (getOauthFromCookie() === 'success') {
-			this.oauthStatus = true;
-		}
-
-		this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
 	},
 	computed: {
 		isCheckedTerms() {
@@ -113,7 +103,7 @@ export default {
 			}
 		},
 		submitTerms() {
-			this.$emit('submitTerms', this.oauthStatus);
+			this.$emit('submitTerms');
 		},
 	},
 };

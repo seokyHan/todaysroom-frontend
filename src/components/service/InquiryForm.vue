@@ -133,7 +133,7 @@
 									<div class="file-upload-list__item__data">
 										<img
 											class="file-upload-list__item__data-thumbnail"
-											:src="`${getImgPath}/Inquiry/${file.fileName}`"
+											:src="`${getImgPath}/upload-dir/Inquiry/${file.fileName}`"
 										/>
 										<div class="file-upload-list__item__data-name">
 											{{ file.originalFilename }}
