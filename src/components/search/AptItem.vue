@@ -52,7 +52,7 @@
 
 <script>
 import {mapState, mapGetters, mapMutations, mapActions} from 'vuex';
-import {postLikedItem, deleteLikedItem} from '@/api/user';
+import {postLikedItem, deletedLikedItem} from '@/api/user';
 
 export default {
 	props: {
@@ -96,7 +96,7 @@ export default {
 			};
 
 			this.OFF_LIKED(index);
-			await deleteLikedItem(aptData);
+			await deletedLikedItem(aptData);
 		},
 	},
 };

@@ -67,7 +67,7 @@ export default {
 					position: 'center',
 					icon: 'error',
 					width: 350,
-					title: `<div style="font-size: 18px; font-family: "Spoqa Han Sans Neo", "sans-serif"; ">${error}<div>`,
+					title: `<div style="font-size: 18px; font-family: "Noto Sans KR", "sans-serif"; ">${error}<div>`,
 					showConfirmButton: false,
 					timer: 1500,
 				});
