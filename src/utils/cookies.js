@@ -33,13 +33,6 @@ function getOauthFromCookie() {
 	);
 }
 
-function getSocialLoginFromCookie() {
-	return document.cookie.replace(
-		/(?:(?:^|.*;\s*)socialLogin\s*=\s*([^;]*).*$)|^.*$/,
-		'$1',
-	);
-}
-
 function getUserFromCookie() {
 	return document.cookie.replace(
 		/(?:(?:^|.*;\s*)nickname\s*=\s*([^;]*).*$)|^.*$/,
@@ -121,7 +114,6 @@ export {
 	saveAuthoritiesToCookie,
 	saveisLogin,
 	getOauthFromCookie,
-	getSocialLoginFromCookie,
 	getUserFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,

@@ -86,7 +86,6 @@ import {mapGetters} from 'vuex';
 import {showAlert} from '@/utils/alertUtils';
 import {
 	getIsSocialLoginFirst,
-	getSocialLoginFromCookie,
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getRecentSearchFromCookie,
@@ -94,35 +93,28 @@ import {
 	getAuthFromCookie,
 	saveisLogin,
 	deleteCookie,
-	deleteIsLogin,
-	clearAllCookies,
 } from '@/utils/cookies';
 export default {
 	created() {
 		if (getIsSocialLoginFirst()) {
 			showAlert('회원가입이 완료되었습니다.', 'success', 1500);
-			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
-			this.$store.dispatch('userStore/SOCIALSIGNUP');
 			deleteCookie('isFirst');
-			deleteCookie('auth');
 		}
 
-		if (getSocialLoginFromCookie() === 'success') {
-			this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
-			this.$store.commit('userStore/SET_ID', getIdFromCookie());
-			this.$store.commit(
-				'userStore/SET_NICKNAME',
-				decodeURI(getUserFromCookie()),
-			);
-			this.$store.commit('userStore/SET_USEREMAIL', getUserEmailFromCookie());
-			this.$store.commit(
-				'userStore/SET_RECENT_SEARCH',
-				getRecentSearchFromCookie(),
-			);
-			saveisLogin(getUserEmailFromCookie());
-		}
+		this.$store.commit('userStore/SET_TOKEN', getAuthFromCookie());
+		this.$store.commit('userStore/SET_ID', getIdFromCookie());
+		this.$store.commit(
+			'userStore/SET_NICKNAME',
+			decodeURI(getUserFromCookie()),
+		);
+		this.$store.commit('userStore/SET_USEREMAIL', getUserEmailFromCookie());
+		this.$store.commit(
+			'userStore/SET_RECENT_SEARCH',
+			getRecentSearchFromCookie(),
+		);
+
+		saveisLogin(getUserEmailFromCookie());
 		deleteCookie('auth');
-		deleteCookie('socialLogin');
 	},
 	computed: {
 		...mapGetters('userStore', ['getToken', 'getNickname', 'isLogin', 'getId']),
@@ -147,8 +139,6 @@ export default {
 		},
 		userLogout() {
 			this.$store.dispatch('userStore/LOGOUT');
-			clearAllCookies();
-			deleteIsLogin();
 
 			this.$router.push('/').catch(() => {});
 		},

@@ -1,4 +1,4 @@
-import {userLogOut, userLogin, socialUserSignup} from '@/api/auth';
+import {userLogOut, userLogin} from '@/api/auth';
 import {
 	getUserFromCookie,
 	getIdFromCookie,
@@ -9,6 +9,8 @@ import {
 	getIsLogin,
 	saveUserToCookie,
 	saveIdToCookie,
+	clearAllCookies,
+	deleteIsLogin,
 	saveisLogin,
 	saveRecentSearchToCookie,
 	saveAuthoritiesToCookie,
@@ -105,21 +107,9 @@ const userStore = {
 		},
 		async LOGOUT({commit}, logoutUserData) {
 			await userLogOut(logoutUserData);
-
+			clearAllCookies();
+			deleteIsLogin();
 			commit('CLEAR_ALL');
-		},
-		async SOCIALSIGNUP({commit}) {
-			const {data} = await socialUserSignup();
-
-			commit('SET_ID', data.id);
-			commit('SET_USEREMAIL', data.userEmail);
-			commit('SET_NICKNAME', data.nickname);
-			commit('SET_RECENT_SEARCH', data.recentSearch);
-
-			saveisLogin(data.userEmail);
-			saveIdToCookie(data.id);
-			saveUserToCookie(data.nickname);
-			saveRecentSearchToCookie(data.recentSearch);
 		},
 	},
 };
