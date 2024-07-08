@@ -70,6 +70,13 @@ function getIsSocialLoginFirst() {
 	);
 }
 
+function getIsSocialLogin() {
+	return document.cookie.replace(
+		/(?:(?:^|.*;\s*)socialLogin\s*=\s*([^;]*).*$)|^.*$/,
+		'$1',
+	);
+}
+
 function getAuthoritiesFromCookie() {
 	return document.cookie.replace(
 		/(?:(?:^|.*;\s*)authority\s*=\s*([^;]*).*$)|^.*$/,
@@ -93,7 +100,7 @@ function deleteIsLogin() {
 }
 
 function deleteCookie(value) {
-	document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
+	document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/;`;
 }
 
 function clearAllCookies() {
@@ -118,6 +125,7 @@ export {
 	getIdFromCookie,
 	getUserEmailFromCookie,
 	getIsSocialLoginFirst,
+	getIsSocialLogin,
 	getRecentSearchFromCookie,
 	getAuthoritiesFromCookie,
 	getIsLogin,
