@@ -2,7 +2,7 @@ import store from '@/store/index';
 import router from '@/routes/index';
 import {reissue} from '../auth';
 import {showAlert} from '@/utils/alertUtils';
-import {deleteIsLogin} from '@/utils/cookies';
+import {clearAllCookies, deleteIsLogin} from '@/utils/cookies';
 
 export function setInterceptors(instance) {
 	instance.interceptors.request.use(
@@ -38,6 +38,7 @@ export function setInterceptors(instance) {
 			} else if (errorCode === 'I-AUT-0006') {
 				showAlert('세션이 만료 되었습니다.', 'warning', 1500);
 				deleteIsLogin();
+				clearAllCookies();
 				router.push('/login').catch(() => {});
 			}
 			return Promise.reject(error);
