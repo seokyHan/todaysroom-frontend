@@ -72,7 +72,7 @@
 						<div class="apt__apt-info">
 							<h2 class="apt-info__name">{{ apt.aptName }}</h2>
 							<h1 class="apt-info__price">
-								{{ apt.amount }}
+								{{ apt.convertAmount }}
 							</h1>
 							<p class="apt-info__build-year">건축연도: {{ apt.buildYear }}</p>
 							<p class="apt-info__address">

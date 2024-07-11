@@ -12,27 +12,27 @@ function fetchDongList(gugunData) {
 	return instance.get('/map/dong', {params: gugunData});
 }
 
-function fetchAptListByGugun(gugunData) {
-	return instance.get('/map/gu/apt', {params: gugunData});
+function fetchHouseListByGugun(gugunData) {
+	return instance.get('/map/gugun/house', {params: gugunData});
 }
 
-function fetchAptListByDong(dongData) {
-	return instance.get('/map/apt', {params: dongData});
+function fetchHouseListByDong(dongData) {
+	return instance.get('/map/dong/house', {params: dongData});
 }
 
-function fetchAptListBySearch(searchDate) {
+function fetchHouseListBySearch(searchDate) {
 	return instance.get('/map/dong-search', {params: searchDate});
 }
 
-function fetchAptListByGugunWithAuth(gugunData) {
-	return instanceWithAuth.get('/map/gu/apt/user', {params: gugunData});
+function fetchHouseListByGugunWithAuth(gugunData) {
+	return instanceWithAuth.get('/map/gu/liked', {params: gugunData});
 }
 
-function fetchAptListByDongWithAuth(dongData) {
-	return instanceWithAuth.get('/map/apt/user', {params: dongData});
+function fetchHouseListByDongWithAuth(dongData) {
+	return instanceWithAuth.get('/map/dong/liked', {params: dongData});
 }
 
-function fetchAptListBySearchWithAuth(searchDate) {
+function fetchHouseListBySearchWithAuth(searchDate) {
 	return instanceWithAuth.get('/map/dong-search/user', {params: searchDate});
 }
 
@@ -48,12 +48,12 @@ export {
 	fetchSidoList,
 	fetchGugunList,
 	fetchDongList,
-	fetchAptListByGugun,
-	fetchAptListByDong,
-	fetchAptListBySearch,
-	fetchAptListByGugunWithAuth,
-	fetchAptListByDongWithAuth,
-	fetchAptListBySearchWithAuth,
+	fetchHouseListByGugun,
+	fetchHouseListByDong,
+	fetchHouseListBySearch,
+	fetchHouseListByGugunWithAuth,
+	fetchHouseListByDongWithAuth,
+	fetchHouseListBySearchWithAuth,
 	fetchRecommendations,
 	fetchRecommendationsByDong,
 };

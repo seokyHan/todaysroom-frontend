@@ -2,12 +2,12 @@ import {
 	fetchSidoList,
 	fetchGugunList,
 	fetchDongList,
-	fetchAptListByGugun,
-	fetchAptListByDong,
-	fetchAptListBySearch,
-	fetchAptListByGugunWithAuth,
-	fetchAptListByDongWithAuth,
-	fetchAptListBySearchWithAuth,
+	fetchHouseListByGugun,
+	fetchHouseListByDong,
+	fetchHouseListBySearch,
+	fetchHouseListByGugunWithAuth,
+	fetchHouseListByDongWithAuth,
+	fetchHouseListBySearchWithAuth,
 } from '@/api/search';
 
 const searchStore = {
@@ -34,26 +34,26 @@ const searchStore = {
 			return state.aptList;
 		},
 		getLowestPrice(state) {
-			const priceList = state.aptList.map((apt) => apt.recentPrice);
+			const priceList = state.aptList.map((apt) => apt.amount);
 
 			priceList.sort(
-				(a, b) => parseInt(a.replace(',', '')) - parseInt(b.replace(',', '')),
+				(a, b) =>
+					parseInt(a.replace('억', '').replace(' ', '')) -
+					parseInt(b.replace('억', '').replace(' ', '')),
 			);
 
-			const lowestPrice = priceList[0];
-
-			return lowestPrice;
+			return priceList[0];
 		},
 		getHighestPrice(state) {
-			const priceList = state.aptList.map((apt) => apt.recentPrice);
+			const priceList = state.aptList.map((apt) => apt.amount);
 
-			priceList.sort((a, b) =>
-				parseInt(b.replace(',', '') - parseInt(a.replace(',', ''))),
+			priceList.sort(
+				(a, b) =>
+					parseInt(b.replace('억', '').replace(' ', '')) -
+					parseInt(a.replace('억', '').replace(' ', '')),
 			);
 
-			const highestPrice = priceList[0];
-
-			return highestPrice;
+			return priceList[0];
 		},
 		getSelectedItem(state) {
 			return state.selectedItem;
@@ -69,14 +69,14 @@ const searchStore = {
 		},
 		SET_SIDO_LIST(state, sidoListData) {
 			sidoListData.forEach((sido) => {
-				state.sidoList.push[{code: sido.sidoCode, sidoName: sido.sidoName}];
+				state.sidoList.push({code: sido.sidoCode, sidoName: sido.sidoName});
 			});
 		},
 		SET_GUGUN_LIST(state, gugunListData) {
 			gugunListData.forEach((gugun) => {
 				state.gugunList.push({
-					code: gugun.gugunCode,
-					gugunName: gugun.gugunName,
+					code: gugun.guGunCode,
+					gugunName: gugun.guGunName,
 				});
 			});
 		},
@@ -154,38 +154,38 @@ const searchStore = {
 		},
 		async GET_APT_LIST_BY_GUGUN({commit}, dongData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListByGugun(dongData);
+			const {data} = await fetchHouseListByGugun(dongData);
 			commit('SET_APT_LIST', data);
 			commit('OFF_LOADING');
 		},
 		async GET_APT_LIST_BY_DONG({commit}, dongData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListByDong(dongData);
+			const {data} = await fetchHouseListByDong(dongData);
 			commit('SET_APT_LIST', data);
 			commit('OFF_LOADING');
 		},
 		async GET_APT_LIST_BY_SEARCH({commit}, searchData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListBySearch(searchData);
+			const {data} = await fetchHouseListBySearch(searchData);
 			commit('SET_APT_LIST', data);
 			commit('SET_SEARCH_DONG_NAME', searchData.dongName);
 			commit('OFF_LOADING');
 		},
 		async GET_APT_LIST_BY_GUGUN_WITH_AUTH({commit}, dongData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListByGugunWithAuth(dongData);
+			const {data} = await fetchHouseListByGugunWithAuth(dongData);
 			commit('SET_APT_LIST', data);
 			commit('OFF_LOADING');
 		},
 		async GET_APT_LIST_BY_DONG_WITH_AUTH({commit}, dongData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListByDongWithAuth(dongData);
+			const {data} = await fetchHouseListByDongWithAuth(dongData);
 			commit('SET_APT_LIST', data);
 			commit('OFF_LOADING');
 		},
 		async GET_APT_LIST_BY_SEARCH_WITH_AUTH({commit}, searchData) {
 			commit('ON_LOADING');
-			const {data} = await fetchAptListBySearchWithAuth(searchData);
+			const {data} = await fetchHouseListBySearchWithAuth(searchData);
 			commit('SET_APT_LIST', data);
 			commit('SET_SEARCH_DONG_NAME', searchData.dongName);
 			commit('OFF_LOADING');
