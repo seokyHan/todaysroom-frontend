@@ -63,11 +63,11 @@
 						</div>
 						<div class="detail__main">
 							<p class="main__price">
-								매매 {{ getSelectedItem.recentPrice | convertAptPrice }}
+								매매 {{ getSelectedItem.convertAmount }}
 							</p>
 							<p class="main__address">
 								{{ getSelectedItem.sidoName }} {{ getSelectedItem.gugunName }}
-								{{ getSelectedItem.dongName }} {{ getSelectedItem.jibun }}
+								{{ getSelectedItem.dongName }}
 							</p>
 						</div>
 						<div class="detail__ad">

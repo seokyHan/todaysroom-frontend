@@ -75,6 +75,7 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters('userStore', ['getImgPath']),
 		...mapGetters('searchStore', [
 			'getAptListPositions',
 			'getAptList',
@@ -296,10 +297,6 @@ export default {
 				);
 
 				this.aptMarkers.forEach((marker, index) => {
-					const convertedAptPrice = this.convertAptPrice(
-						this.getAptList[index].recentPrice,
-					);
-
 					const content = `
 						<div class="wrap">
 							<div class="info">
@@ -308,18 +305,15 @@ export default {
 								</div>
 								<div class="body">
 									<div class="img">
-										<img src="${this.getAptList[index].img}" width="73" height="70">
+										<img src="${this.getImgPath}${this.getAptList[index].image}" width="73" height="70">
 									</div>
 									<div class="desc">
 										<div class="price">
-										${convertedAptPrice}
+										${this.getAptList[index].convertAmount}
 										</div>
 										<div class="address">
 											<span class="address__info">
-												${this.getAptList[index].sidoName} ${this.getAptList[index].gugunName} ${this.getAptList[index].dongName}
-											</span>
-											<span class="address__jibun">
-												(지번) ${this.getAptList[index].jibun}
+												${this.getAptList[index].locationOfAgency} ${this.getAptList[index].legal}
 											</span>
 										</div>
 									</div>
@@ -346,25 +340,6 @@ export default {
 
 				this.map.setBounds(bounds);
 			}
-		},
-		convertAptPrice(price) {
-			const aptPrice = price.trim();
-
-			if (aptPrice.length <= 5) {
-				const thousand = price.replace(',', '');
-				return thousand;
-			}
-
-			const hundredMillon = aptPrice.substring(0, aptPrice.length - 5);
-			const thousand = parseInt(
-				aptPrice.substring(aptPrice - 5).replace(',', ''),
-			);
-			const convertedPrice =
-				thousand === 0
-					? `${hundredMillon}억`
-					: `${hundredMillon}억 ${thousand}`;
-
-			return convertedPrice;
 		},
 	},
 };

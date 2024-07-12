@@ -125,88 +125,88 @@ export default {
 				showAlert(error, 'error', 1500);
 			}
 		},
+		async getList(action, data) {
+			try {
+				await this[action](data);
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
+		async getAptList(action, data) {
+			try {
+				if (this.isLogin) {
+					data.userId = this.getId;
+					await this[`${action}_WITH_AUTH`](data);
+				} else {
+					await this[action](data);
+				}
+				this.BACK_TO_ITEM_LIST();
+			} catch (error) {
+				showAlert(error, 'error', 1500);
+			}
+		},
 		async getGugunList(sidoCode) {
-			const sidoData = {
-				sido: sidoCode,
-			};
-
-			try {
-				await this.GET_GUGUN_LIST(sidoData);
-			} catch (error) {
-				showAlert(error, 'error', 1500);
-			}
+			await this.getList('GET_GUGUN_LIST', {sidoCode: sidoCode});
 		},
-		async getDongList(gugunCode) {
-			const gugunData = {
-				gugun: gugunCode,
-			};
+		async getDongList() {
+			const sido = this.sidoList.find(
+				(sido) => sido.code === this.selectedSidoCode,
+			);
+			const gugun = this.gugunList.find(
+				(gugun) => gugun.code === this.selectedGugunCode,
+			);
 
-			try {
-				await this.GET_DONG_LIST(gugunData);
-			} catch (error) {
-				showAlert(error, 'error', 1500);
-			}
+			await this.getList('GET_DONG_LIST', {
+				sidoName: sido.sidoName,
+				gugunName: gugun.gugunName,
+			});
 		},
-		async getAptListByGugun(gugunCode) {
-			try {
-				if (this.isLogin) {
-					const gugunData = {
-						userId: this.getId,
-						gugun: gugunCode,
-					};
-					await this.GET_APT_LIST_BY_GUGUN_WITH_AUTH(gugunData);
-				} else {
-					const gugunData = {
-						gugun: gugunCode,
-					};
-
-					await this.GET_APT_LIST_BY_GUGUN(gugunData);
-				}
-
-				this.BACK_TO_ITEM_LIST();
-			} catch (error) {
-				showAlert(error, 'error', 1500);
-			}
+		async getAptListByGugun() {
+			const sido = this.sidoList.find(
+				(sido) => sido.code === this.selectedSidoCode,
+			);
+			const gugun = this.gugunList.find(
+				(gugun) => gugun.code === this.selectedGugunCode,
+			);
+			await this.getAptList('GET_APT_LIST_BY_GUGUN', {
+				sidoName: sido.sidoName,
+				gugunName: gugun.gugunName,
+			});
 		},
-		async getAptListByDong(dongCode) {
-			try {
-				if (this.isLogin) {
-					const dongData = {
-						userId: this.getId,
-						dong: dongCode,
-					};
-
-					await this.GET_APT_LIST_BY_DONG_WITH_AUTH(dongData);
-				} else {
-					const dongData = {
-						dong: dongCode,
-					};
-
-					await this.GET_APT_LIST_BY_DONG(dongData);
-				}
-
-				this.BACK_TO_ITEM_LIST();
-			} catch (error) {
-				showAlert(error, 'error', 1500);
-			}
+		async getAptListByDong() {
+			const sido = this.sidoList.find(
+				(sido) => sido.code === this.selectedSidoCode,
+			);
+			const gugun = this.gugunList.find(
+				(gugun) => gugun.code === this.selectedGugunCode,
+			);
+			const dong = this.dongList.find(
+				(dong) => dong.code === this.selectedDongCode,
+			);
+			await this.getAptList('GET_APT_LIST_BY_DONG', {
+				sidoName: sido.sidoName,
+				gugunName: gugun.gugunName,
+				dongName: dong.dongName,
+			});
 		},
 		async searchAptListByDong() {
+			const sido = this.sidoList.find(
+				(sido) => sido.code === this.selectedSidoCode,
+			);
+			const gugun = this.gugunList.find(
+				(gugun) => gugun.code === this.selectedGugunCode,
+			);
+			const dong = this.dongList.find(
+				(dong) => dong.code === this.selectedDongCode,
+			);
+			const searchData = {
+				sidoName: sido.sidoName,
+				gugunName: gugun.gugunName,
+				dongName: dong.dongName,
+			};
+
 			try {
-				if (this.isLogin) {
-					const searchData = {
-						userId: this.getId,
-						dongName: this.searchDong,
-					};
-
-					await this.GET_APT_LIST_BY_SEARCH_WITH_AUTH(searchData);
-				} else {
-					const searchData = {
-						dongName: this.searchDong,
-					};
-
-					await this.GET_APT_LIST_BY_SEARCH(searchData);
-				}
-
+				await this.getAptList('GET_APT_LIST_BY_SEARCH', searchData);
 				this.CLEAR_GUGUN_LIST();
 				this.CLEAR_DONG_LIST();
 				this.selectedSidoCode = '시를 선택하세요';
@@ -220,7 +220,6 @@ export default {
 						id: this.getId,
 						recentSearch: this.searchDongName,
 					};
-
 					putRecentSearch(recentSearchData);
 					this.SET_RECENT_SEARCH(this.searchDongName);
 				}
@@ -243,8 +242,8 @@ export default {
 			this.selectedDongCode = '동을 선택하세요';
 
 			if (!isNaN(this.selectedGugunCode)) {
-				this.getDongList(this.selectedGugunCode);
-				await this.getAptListByGugun(this.selectedGugunCode);
+				this.getDongList();
+				await this.getAptListByGugun();
 			}
 		},
 		async selectDong() {
