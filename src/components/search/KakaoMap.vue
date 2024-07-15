@@ -278,6 +278,7 @@ export default {
 			});
 		},
 		displayMarker(markerPositions) {
+			console.log('aptMarker : ' + this.aptMarkers);
 			if (this.aptMarkers.length > 0) {
 				this.aptMarkers.forEach((marker) => marker.setMap(null));
 				this.aptMarkers = [];

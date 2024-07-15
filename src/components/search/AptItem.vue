@@ -23,7 +23,9 @@
 				<p class="desc__price">매매 {{ apt.convertAmount }}</p>
 				<h1 class="desc__title">아파트 · {{ apt.aptName }}</h1>
 				<p class="desc__sub-desc">건축연도: {{ apt.buildYear }}년</p>
-				<p class="desc__sub-desc">{{ apt.gugunName }} {{ apt.dongName }}</p>
+				<p class="desc__sub-desc">{{ apt.locationOfAgency }} {{ apt.legal }}</p>
+				<p class="desc__sub-desc">전용면적 : {{ apt.exclusiveArea }}㎡</p>
+				<p class="desc__sub-desc">층수 : {{ apt.floor }}층</p>
 				<div class="desc__badges">
 					<p class="badges__confirm-status">
 						확인 {{ apt.year }}.{{ apt.month }}.{{ apt.day }}.
