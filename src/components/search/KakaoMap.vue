@@ -277,16 +277,28 @@ export default {
 				this.categoryStatus[category] = 'off';
 			});
 		},
+		removeDuplicates(data) {
+			const uniqueMap = new Map();
+			data.forEach((item) => {
+				const key = `${item.La},${item.Ma}`;
+				if (!uniqueMap.has(key)) {
+					uniqueMap.set(key, item);
+				}
+			});
+
+			return Array.from(uniqueMap.values());
+		},
 		displayMarker(markerPositions) {
-			console.log('aptMarker : ' + this.aptMarkers);
 			if (this.aptMarkers.length > 0) {
+				document.querySelectorAll('.wrap').forEach((e) => e.remove());
 				this.aptMarkers.forEach((marker) => marker.setMap(null));
 				this.aptMarkers = [];
 			}
 
-			const positions = markerPositions.map(
+			let positions = markerPositions.map(
 				(position) => new kakao.maps.LatLng(...position),
 			);
+			positions = this.removeDuplicates(positions);
 
 			if (positions.length > 0) {
 				this.aptMarkers = positions.map(
@@ -298,30 +310,65 @@ export default {
 				);
 
 				this.aptMarkers.forEach((marker, index) => {
-					const content = `
-						<div class="wrap">
-							<div class="info">
-								<div class="title">
-									${this.getAptList[index].aptName}
-								</div>
-								<div class="body">
-									<div class="img">
-										<img src="${this.getImgPath}${this.getAptList[index].image}" width="73" height="70">
-									</div>
-									<div class="desc">
-										<div class="price">
-										${this.getAptList[index].convertAmount}
-										</div>
-										<div class="address">
-											<span class="address__info">
-												${this.getAptList[index].locationOfAgency} ${this.getAptList[index].legal}
-											</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					`;
+					const content = document.createElement('div');
+					content.classList.add('wrap');
+
+					const info = document.createElement('div');
+					info.classList.add('info');
+
+					const title = document.createElement('div');
+					title.classList.add('title');
+
+					const aptName = document.createElement('div');
+					aptName.textContent = this.getAptList[index].aptName;
+
+					const closeBtn = document.createElement('div');
+					closeBtn.classList.add('close');
+					closeBtn.setAttribute('title', '닫기');
+					closeBtn.textContent = 'X';
+
+					title.appendChild(aptName);
+					title.appendChild(closeBtn);
+
+					const body = document.createElement('div');
+					body.classList.add('body');
+
+					const imgContainer = document.createElement('div');
+					imgContainer.classList.add('img');
+
+					const img = document.createElement('img');
+					img.src = `${this.getImgPath}${this.getAptList[index].image}`;
+					img.width = 73;
+					img.height = 70;
+
+					imgContainer.appendChild(img);
+
+					const desc = document.createElement('div');
+					desc.classList.add('desc');
+
+					const price = document.createElement('div');
+					price.classList.add('price');
+					price.textContent = this.getAptList[index].convertAmount;
+
+					const address = document.createElement('div');
+					address.classList.add('address');
+
+					const addressInfo = document.createElement('span');
+					addressInfo.classList.add('address__info');
+					addressInfo.textContent = `${this.getAptList[index].locationOfAgency} ${this.getAptList[index].legal}`;
+
+					address.appendChild(addressInfo);
+
+					desc.appendChild(price);
+					desc.appendChild(address);
+
+					body.appendChild(imgContainer);
+					body.appendChild(desc);
+
+					info.appendChild(title);
+					info.appendChild(body);
+
+					content.appendChild(info);
 
 					const overlay = new kakao.maps.CustomOverlay({
 						content: content,
@@ -330,8 +377,13 @@ export default {
 					});
 
 					kakao.maps.event.addListener(marker, 'click', function () {
+						console.log(this.map);
 						overlay.setMap(this.map);
 					});
+
+					closeBtn.onclick = function () {
+						overlay.setMap(null);
+					};
 				});
 
 				const bounds = positions.reduce(
