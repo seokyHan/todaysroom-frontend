@@ -289,12 +289,13 @@ export default {
 			return Array.from(uniqueMap.values());
 		},
 		displayMarker(markerPositions) {
+			document.querySelectorAll('.wrap').forEach((e) => e.remove());
 			if (this.aptMarkers.length > 0) {
-				document.querySelectorAll('.wrap').forEach((e) => e.remove());
 				this.aptMarkers.forEach((marker) => marker.setMap(null));
 				this.aptMarkers = [];
 			}
 
+			const map = this.map;
 			let positions = markerPositions.map(
 				(position) => new kakao.maps.LatLng(...position),
 			);
@@ -304,7 +305,7 @@ export default {
 				this.aptMarkers = positions.map(
 					(position) =>
 						new kakao.maps.Marker({
-							map: this.map,
+							map: map,
 							position,
 						}),
 				);
@@ -372,13 +373,12 @@ export default {
 
 					const overlay = new kakao.maps.CustomOverlay({
 						content: content,
-						map: this.map,
+						map: map,
 						position: marker.getPosition(),
 					});
 
 					kakao.maps.event.addListener(marker, 'click', function () {
-						console.log(this.map);
-						overlay.setMap(this.map);
+						overlay.setMap(map);
 					});
 
 					closeBtn.onclick = function () {
