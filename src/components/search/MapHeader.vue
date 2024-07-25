@@ -6,7 +6,7 @@
 					type="text"
 					v-model="searchDong"
 					@keyup.enter.prevent="searchAptListByDong"
-					placeholder="동 이름을 검색하세요."
+					placeholder="시와 동 이름을 검색하세요."
 				/>
 			</div>
 		</div>
@@ -190,19 +190,8 @@ export default {
 			});
 		},
 		async searchAptListByDong() {
-			const sido = this.sidoList.find(
-				(sido) => sido.code === this.selectedSidoCode,
-			);
-			const gugun = this.gugunList.find(
-				(gugun) => gugun.code === this.selectedGugunCode,
-			);
-			const dong = this.dongList.find(
-				(dong) => dong.code === this.selectedDongCode,
-			);
 			const searchData = {
-				sidoName: sido.sidoName,
-				gugunName: gugun.gugunName,
-				dongName: dong.dongName,
+				dongName: this.searchDong,
 			};
 
 			try {
@@ -218,10 +207,10 @@ export default {
 				if (this.isLogin) {
 					const recentSearchData = {
 						id: this.getId,
-						recentSearch: this.searchDongName,
+						recentSearch: searchData.dongName,
 					};
 					putRecentSearch(recentSearchData);
-					this.SET_RECENT_SEARCH(this.searchDongName);
+					this.SET_RECENT_SEARCH(searchData.dongName);
 				}
 			} catch (error) {
 				showAlert(error, 'error', 1500);

@@ -277,10 +277,21 @@ export default {
 				this.categoryStatus[category] = 'off';
 			});
 		},
-		removeDuplicates(data) {
+		removeDuplicatesLatLng(data) {
 			const uniqueMap = new Map();
 			data.forEach((item) => {
 				const key = `${item.La},${item.Ma}`;
+				if (!uniqueMap.has(key)) {
+					uniqueMap.set(key, item);
+				}
+			});
+
+			return Array.from(uniqueMap.values());
+		},
+		removeDuplicatesApt(data) {
+			const uniqueMap = new Map();
+			data.forEach((item) => {
+				const key = `${item.lat},${item.lng}`;
 				if (!uniqueMap.has(key)) {
 					uniqueMap.set(key, item);
 				}
@@ -299,7 +310,8 @@ export default {
 			let positions = markerPositions.map(
 				(position) => new kakao.maps.LatLng(...position),
 			);
-			positions = this.removeDuplicates(positions);
+			positions = this.removeDuplicatesLatLng(positions);
+			const aptList = this.removeDuplicatesApt(this.getAptList);
 
 			if (positions.length > 0) {
 				this.aptMarkers = positions.map(
@@ -321,7 +333,7 @@ export default {
 					title.classList.add('title');
 
 					const aptName = document.createElement('div');
-					aptName.textContent = this.getAptList[index].aptName;
+					aptName.textContent = aptList[index].aptName;
 
 					const closeBtn = document.createElement('div');
 					closeBtn.classList.add('close');
@@ -338,7 +350,7 @@ export default {
 					imgContainer.classList.add('img');
 
 					const img = document.createElement('img');
-					img.src = `${this.getImgPath}${this.getAptList[index].image}`;
+					img.src = `${this.getImgPath}${aptList[index].image}`;
 					img.width = 73;
 					img.height = 70;
 
@@ -349,14 +361,14 @@ export default {
 
 					const price = document.createElement('div');
 					price.classList.add('price');
-					price.textContent = this.getAptList[index].convertAmount;
+					price.textContent = aptList[index].convertAmount;
 
 					const address = document.createElement('div');
 					address.classList.add('address');
 
 					const addressInfo = document.createElement('span');
 					addressInfo.classList.add('address__info');
-					addressInfo.textContent = `${this.getAptList[index].locationOfAgency} ${this.getAptList[index].legal}`;
+					addressInfo.textContent = `${aptList[index].locationOfAgency} ${aptList[index].legal}`;
 
 					address.appendChild(addressInfo);
 

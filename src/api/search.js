@@ -33,7 +33,7 @@ function fetchHouseListByDongWithAuth(dongData) {
 }
 
 function fetchHouseListBySearchWithAuth(searchDate) {
-	return instanceWithAuth.get('/map/dong-search/user', {params: searchDate});
+	return instanceWithAuth.get('/map/dong-search/liked', {params: searchDate});
 }
 
 function fetchRecommendations(recentSearchData) {
