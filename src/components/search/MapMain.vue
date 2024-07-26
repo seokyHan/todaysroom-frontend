@@ -36,7 +36,7 @@
 						<div class="detail__image">
 							<img
 								v-show="!roadViewStatus"
-								:src="getSelectedItem.img"
+								:src="`${getImgPath}${getSelectedItem.image}`"
 								:alt="getSelectedItem.aptName"
 							/>
 							<div v-show="roadViewStatus" id="roadview"></div>
@@ -113,7 +113,7 @@ export default {
 			'getSelectedItem',
 			'getAppKey',
 		]),
-		...mapGetters('userStore', ['getId']),
+		...mapGetters('userStore', ['getId', 'getImgPath']),
 	},
 	methods: {
 		...mapMutations('searchStore', [
