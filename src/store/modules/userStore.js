@@ -55,6 +55,7 @@ const userStore = {
 			return state.authorities;
 		},
 	},
+
 	mutations: {
 		SET_TOKEN(state, accessToken) {
 			state.accessToken = accessToken;
